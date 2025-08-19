@@ -1,0 +1,51 @@
+# Source control
+.git
+.gitignore
+
+# CI
+.travis.yml
+.circleci/
+.github/
+
+# Development files
+test/
+tests/
+*.test.js
+*.spec.js
+coverage/
+.nyc_output
+
+# Linting
+.eslintrc*
+.eslintignore
+.prettierrc*
+
+# Documentation (except README.md)
+docs/
+CHANGELOG.md
+CONTRIBUTING.md
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+build/
+dist/
+lib/*.map
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,47 @@
+{
+  "name": "@agile-team/vscode-config",
+  "version": "1.0.0",
+  "description": "One-command VSCode configuration installer for team standard setup",
+  "main": "lib/installer.js",
+  "bin": {
+    "vscode-config": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md"
+  ],
+  "keywords": [
+    "vscode",
+    "configuration",
+    "setup",
+    "development",
+    "ide",
+    "team",
+    "settings",
+    "extensions"
+  ],
+  "author": "CHENY <ycyplus@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChenyCHENYU/vscode-config-npm.git"
+  },
+  "homepage": "https://github.com/ChenyCHENYU/vscode-config-npm#readme",
+  "bugs": {
+    "url": "https://github.com/ChenyCHENYU/vscode-config-npm/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "preferGlobal": true,
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^9.5.0",
+    "ora": "^5.4.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "echo \"Publishing @yourname  /vscode-config...\""
+  }
+}
