@@ -1,212 +1,367 @@
 # VSCode Configuration Installer
 
-🚀 一键安装团队标准的 VSCode 配置，包括设置、快捷键、代码片段和扩展。
+🚀 一键安装团队标准的 VSCode 配置，支持双源加速和智能备份管理。
 
-[![npm version](https://badge.fury.io/js/%40ChenyCHENYU%2Fvscode-config.svg)](https://badge.fury.io/js/%40ChenyCHENYU%2Fvscode-config)
+[![npm version](https://badge.fury.io/js/vscode-config-installer.svg)](https://badge.fury.io/js/vscode-config-installer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org/)
 
 ## ✨ 特性
 
-- 🔄 **始终最新**: 每次安装都获取最新的团队配置
-- 💾 **自动备份**: 安装前自动备份现有配置
+- 🌐 **双源加速**: GitHub 主源 + Gitee 备用源，智能切换确保下载成功
+- 💾 **智能备份**: 自动备份现有配置，支持一键恢复
+- 🔄 **状态检查**: 全面的配置状态监控和诊断
+- ⚡ **轻量安装**: 按需下载，不再克隆整个仓库
+- 🛡️ **容错设计**: 部分失败不影响整体安装
 - 🌍 **跨平台**: 支持 Windows、macOS 和 Linux
-- ⚡ **快速安装**: 一条命令完成所有配置
-- 🛡️ **安全可靠**: 只读安装，不会污染配置源
-- 🎨 **美化输出**: 清晰的进度提示和状态显示
+- 🎨 **美化输出**: 清晰的进度提示和彩色状态显示
+- 🧹 **备份管理**: 自动清理旧备份，释放磁盘空间
 
 ## 🚀 快速开始
 
 ### 安装
 
 ```bash
-npm install -g @agile-team/vscode-config
+npm install -g vscode-config-installer
 ```
 
-### 使用
+### 基础使用
 
 ```bash
-# 安装最新的 VSCode 配置
+# 安装最新配置（自动选择最佳源）
 vscode-config install
+
+# 使用国内镜像源
+vscode-config install --source gitee
+
+# 网络较慢时增加超时时间
+vscode-config install --timeout 60
 ```
 
 就这么简单！🎉
 
-## 📖 详细用法
+## 📖 完整命令参考
 
-### 用户体验（极简）
+### 主要命令
 
+| 命令 | 功能 | 示例 |
+|------|------|------|
+| `install` | 安装/更新 VSCode 配置 | `vscode-config install` |
+| `status` | 检查配置状态 | `vscode-config status` |
+| `restore` | 恢复备份配置 | `vscode-config restore` |
+| `clean` | 清理旧备份 | `vscode-config clean` |
+
+### 安装选项
+
+| 选项 | 说明 | 默认值 |
+|------|------|--------|
+| `--source <name>` | 指定配置源 (github/gitee) | 自动选择 |
+| `--timeout <seconds>` | 扩展安装超时时间 | 30 |
+| `--force` | 强制安装，跳过备份确认 | false |
+| `--dry-run` | 预览模式，不实际安装 | false |
+
+### 备份管理选项
+
+| 选项 | 说明 | 默认值 |
+|------|------|--------|
+| `--list` | 列出所有可用备份 | - |
+| `--backup <path>` | 指定备份路径恢复 | 最新备份 |
+| `--older-than <days>` | 清理指定天数前的备份 | 30 |
+
+## 🎯 使用场景
+
+### 场景一：新机器快速配置
 ```bash
-# 一次性全局安装
-npm install -g @agile-team/vscode-config
-
-# 随时使用（获取最新配置）
+# 全新安装
+npm install -g vscode-config-installer
 vscode-config install
 
-# 就这么简单！
+# 检查安装结果
+vscode-config status
 ```
 
-### 命令选项
+### 场景二：团队配置同步
+```bash
+# 获取最新团队配置
+vscode-config install --force
 
-| 选项                  | 说明                           |
-| --------------------- | ------------------------------ |
-| `--force`             | 强制安装，跳过交互确认         |
-| `--timeout <seconds>` | 扩展安装超时时间（默认 30 秒） |
-| `--help`              | 显示帮助信息                   |
-| `--version`           | 显示版本信息                   |
+# 查看已安装扩展
+vscode-config status
+```
+
+### 场景三：网络环境差
+```bash
+# 使用国内源 + 延长超时
+vscode-config install --source gitee --timeout 120
+```
+
+### 场景四：配置回滚
+```bash
+# 查看所有备份
+vscode-config restore --list
+
+# 恢复最新备份
+vscode-config restore
+
+# 恢复指定备份
+vscode-config restore --backup ~/path/to/backup
+```
+
+### 场景五：维护清理
+```bash
+# 清理 30 天前的备份
+vscode-config clean
+
+# 清理 7 天前的备份
+vscode-config clean --older-than 7
+```
 
 ## 🔧 系统要求
 
+### 必需软件
 - **Node.js**: >= 14.0.0
-- **Git**: 用于下载配置文件
+- **Git**: 用于验证系统环境
 - **VSCode**: 已安装并添加到 PATH
 
 ### 验证环境
-
 ```bash
-# 检查 Node.js
-node --version
+# 一键检查所有依赖
+vscode-config status
 
-# 检查 Git
-git --version
-
-# 检查 VSCode
-code --version
+# 手动验证
+node --version    # >= 14.0.0
+git --version     # 任意版本
+code --version    # 任意版本
 ```
 
 ## 📦 安装内容
 
-此工具会安装以下 VSCode 配置：
-
+### 配置文件
 - **settings.json**: 编辑器设置和首选项
 - **keybindings.json**: 自定义快捷键绑定
-- **代码片段**: 各种语言的代码片段
-- **扩展列表**: 团队标准的 VSCode 扩展
+- **snippets/**: 各种语言的代码片段
 
-## 💾 备份与恢复
+### 扩展管理
+- 从 `extensions.json` 读取扩展列表
+- 并发安装，提高效率
+- 自动跳过已安装扩展
+- 详细的安装统计报告
 
-### 自动备份
+## 💾 备份系统
 
-安装时会自动备份现有配置到带时间戳的目录：
-
-- **macOS**: `~/Library/Application Support/Code/User/backup_YYYYMMDDHHMMSS/`
-- **Linux**: `~/.config/Code/User/backup_YYYYMMDDHHMMSS/`
-- **Windows**: `%APPDATA%/Code/User/backup_YYYYMMDDHHMMSS/`
-
-### 手动恢复
-
-如果需要恢复之前的配置：
-
-```bash
-# 查看备份目录
-# macOS/Linux
-ls ~/.config/Code/User/backup_*
-
-# Windows (PowerShell)
-dir "$env:APPDATA/Code/User/backup_*"
-
-# 恢复指定备份 (示例: backup_20231030143052)
-# macOS/Linux
-cp -r ~/.config/Code/User/backup_20231030143052/* ~/.config/Code/User/
-
-# Windows (PowerShell)
-Copy-Item "$env:APPDATA/Code/User/backup_20231030143052/*" "$env:APPDATA/Code/User/" -Recurse -Force
+### 自动备份策略
+```
+配置目录/
+├── settings.json
+├── keybindings.json
+├── snippets/
+├── backup-1635648000000/    # 自动备份
+│   ├── settings.json
+│   ├── keybindings.json
+│   └── snippets/
+└── backup-1635734400000/    # 更早备份
 ```
 
-## 🔄 更新配置
+### 备份位置
+- **macOS**: `~/Library/Application Support/Code/User/`
+- **Linux**: `~/.config/Code/User/`
+- **Windows**: `%APPDATA%\Code\User\`
 
-想要获取最新的团队配置？只需重新运行安装命令：
-
+### 备份管理
 ```bash
+# 查看备份状态
+vscode-config status
+
+# 列出所有备份
+vscode-config restore --list
+
+# 清理旧备份
+vscode-config clean --older-than 30
+```
+
+## 🌐 双源加速
+
+### 配置源
+| 源 | 用途 | 速度 |
+|---|------|------|
+| GitHub | 主源，最新更新 | 国外快 |
+| Gitee | 备用源，国内镜像 | 国内快 |
+
+### 智能切换
+```bash
+# 自动选择最佳源
 vscode-config install
+
+# 手动指定源
+vscode-config install --source github  # 使用 GitHub
+vscode-config install --source gitee   # 使用 Gitee
 ```
 
-每次运行都会：
+### 故障转移
+```
+尝试 GitHub → 超时/失败 → 自动切换到 Gitee → 成功
+```
 
-1. 下载最新的配置文件
-2. 备份当前配置
-3. 应用新配置
-4. 安装新增的扩展
+## 🆘 故障排除
 
-## 🆘 常见问题
+### 网络问题
+```bash
+# 症状：下载超时或失败
+# 解决方案：
+vscode-config install --source gitee --timeout 120
+```
 
-### Q: 安装失败怎么办？
+### VSCode 未找到
+```bash
+# 症状：code command not found
+# 解决方案：
+# 1. 重新安装 VSCode
+# 2. 添加到 PATH：
+#    - macOS: Command Palette → "Shell Command: Install 'code' command in PATH"
+#    - Windows: 安装时勾选 "Add to PATH"
+```
 
-**A**: 请按以下步骤排查：
+### 扩展安装失败
+```bash
+# 症状：部分扩展安装失败
+# 这是正常的！可能原因：
+# - 网络问题
+# - 扩展需要登录
+# - 扩展已下架
 
-1. **检查网络连接**
+# 解决方案：
+# 1. 重新运行安装
+vscode-config install
 
-   ```bash
-   # 测试是否能访问 GitHub
-   ping github.com
-   ```
+# 2. 手动安装特定扩展
+code --install-extension ms-python.python
+```
 
-2. **验证系统依赖**
+### 权限问题
+```bash
+# Linux/macOS 权限错误
+sudo chown -R $(whoami) ~/.config/Code/User/
+sudo chown -R $(whoami) ~/.vscode/
 
-   ```bash
-   git --version
-   code --version
-   ```
+# Windows 管理员权限
+# 以管理员身份运行命令提示符
+```
 
-3. **尝试增加超时时间**
+## 📊 状态检查详解
 
-   ```bash
-   vscode-config install --timeout 60
-   ```
+```bash
+vscode-config status
+```
 
-4. **查看详细错误信息** - 工具会显示具体的失败原因
+输出示例：
+```
+📊 VSCode 配置状态检查
+=======================================
 
-### Q: 扩展安装失败？
+✓ VSCode 已安装
+   版本: 1.84.2
+   架构: x64
 
-**A**: 部分扩展安装失败是正常的，可能原因：
+📁 配置文件状态:
+   配置目录: /Users/username/.config/Code/User
+   ✓ settings.json (2.1 KB, 修改于 2 小时前)
+   ✓ keybindings.json (0.5 KB, 修改于 2 小时前)
+   ✓ snippets (目录, 修改于 2 小时前)
 
-- 网络问题
-- 扩展已下架
-- 需要登录的扩展
+🧩 已安装扩展 (显示前10个):
+   • ms-python.python@2023.20.0
+   • esbenp.prettier-vscode@10.1.0
+   • bradlc.vscode-tailwindcss@0.10.5
+   ... 还有 47 个扩展
 
-解决方案：
+💾 配置备份:
+   • backup-1698765432000 (156.2 KB, 2 小时前)
+   • backup-1698679032000 (154.8 KB, 1 天前)
+   ... 还有 3 个备份
 
-1. 重新运行安装命令
-2. 手动安装失败的扩展：`code --install-extension extension-name`
+💻 系统信息:
+   操作系统: Darwin 23.1.0
+   架构: arm64
+   Node.js: v18.18.0
+```
 
-### Q: 在公司网络环境下使用？
+## 🔄 更新流程
 
-**A**: 如果公司有网络限制：
+### 获取最新配置
+```bash
+# 简单更新
+vscode-config install
 
-1. 确保可以访问 `github.com`
-2. 配置 Git 代理（如果需要）：
-   ```bash
-   git config --global http.proxy http://proxy-server:port
-   ```
-3. 使用更长的超时时间：`--timeout 120`
+# 强制更新（跳过确认）
+vscode-config install --force
+```
 
-### Q: 配置没有生效？
-
-**A**:
-
-1. 重启 VSCode
-2. 检查 VSCode 是否有权限问题
-3. 查看 VSCode 输出面板的错误信息
+### 更新过程
+1. 📥 下载最新配置文件
+2. 💾 自动备份当前配置
+3. ⚙️ 应用新配置
+4. 📦 安装新增扩展
+5. 📊 显示更新统计
 
 ## 🔗 相关链接
 
-- [配置源代码](https://github.com/yourname/vscode-config) - 查看完整的配置内容
-- [问题反馈](https://github.com/yourname/vscode-config-npm/issues) - 报告 bug 或提出建议
+- [配置源代码](https://github.com/ChenyCHENYU/vscode-config) - 查看完整的配置内容
+- [问题反馈](https://github.com/ChenyCHENYU/vscode-config-installer/issues) - 报告 bug 或提出建议
+- [更新日志](https://github.com/ChenyCHENYU/vscode-config-installer/releases) - 查看版本更新
 - [VSCode 官网](https://code.visualstudio.com/) - 下载 VSCode
+
+## 🤝 贡献
+
+我们欢迎各种形式的贡献！
+
+### 如何贡献
+1. 🍴 Fork 项目
+2. 🌿 创建功能分支 (`git checkout -b feature/amazing-feature`)
+3. 💾 提交更改 (`git commit -m 'Add amazing feature'`)
+4. 📤 推送分支 (`git push origin feature/amazing-feature`)
+5. 🔀 创建 Pull Request
+
+### 开发设置
+```bash
+# 克隆仓库
+git clone https://github.com/ChenyCHENYU/vscode-config-installer.git
+cd vscode-config-installer
+
+# 安装依赖
+npm install
+
+# 本地测试
+npm link
+vscode-config --help
+
+# 运行测试
+npm test
+
+# 代码检查
+npm run lint
+```
 
 ## 📄 开源协议
 
 [MIT License](LICENSE) - 可自由使用、修改和分发。
 
-## 🤝 贡献
+## 🙏 致谢
 
-欢迎提出建议和改进！请查看我们的[贡献指南](CONTRIBUTING.md)。
+感谢所有贡献者和使用者的支持！
+
+特别感谢：
+- [chalk](https://github.com/chalk/chalk) - 终端字符串样式
+- [commander](https://github.com/tj/commander.js) - 命令行接口
+- [ora](https://github.com/sindresorhus/ora) - 优雅的终端加载器
 
 ---
 
 <div align="center">
 
-**🎉 享受统一的 VSCode 开发体验！**
+**🎉 享受统一高效的 VSCode 开发体验！**
 
-如果这个工具对你有帮助，请给我们一个 ⭐
+如果这个工具对你有帮助，请给我们一个 ⭐ 
+
+[![GitHub stars](https://img.shields.io/github/stars/ChenyCHENYU/vscode-config-installer?style=social)](https://github.com/ChenyCHENYU/vscode-config-installer)
 
 </div>

@@ -1,6 +1,6 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "One-command VSCode configuration installer for team standard setup",
   "main": "lib/installer.js",
   "bin": {
@@ -41,7 +41,8 @@
     "ora": "^5.4.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "echo \"Publishing @yourname  /vscode-config...\""
+    "start": "node bin/cli.js",
+    "test": "echo \"No tests yet\"",
+    "prepublishOnly": "echo \"Publishing @agile-team/vscode-config...\""
   }
 }
