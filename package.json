@@ -1,6 +1,6 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "One-command VSCode configuration installer for team standard setup",
   "main": "lib/installer.js",
   "bin": {
