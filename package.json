@@ -25,11 +25,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ChenyCHENYU/vscode-config-npm.git"
+    "url": "https://github.com/ChenyCHENYU/vscode-config-installer.git"
   },
-  "homepage": "https://github.com/ChenyCHENYU/vscode-config-npm#readme",
+  "homepage": "https://github.com/ChenyCHENYU/vscode-config-installer#readme",
   "bugs": {
-    "url": "https://github.com/ChenyCHENYU/vscode-config-npm/issues"
+    "url": "https://github.com/ChenyCHENYU/vscode-config-installer/issues"
   },
   "engines": {
     "node": ">=14.0.0"

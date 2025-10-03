@@ -3,23 +3,52 @@
 const { program } = require('commander');
 const chalk = require('chalk');
 const { installConfig, CONFIG_SOURCES } = require('../lib/installer');
+const readline = require('readline');
 
 // 版本信息
 const packageJson = require('../package.json');
 
+/**
+ * 交互式选择安装模式
+ */
+async function selectInstallMode() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  return new Promise((resolve) => {
+    console.log(chalk.blue('🔧 请选择安装模式：'));
+    console.log(chalk.cyan('  1) 覆盖模式 (override) - 完全替换现有配置，确保团队配置一致性'));
+    console.log(chalk.yellow('  2) 扩展模式 (merge) - 保留个人设置，只添加或更新团队配置'));
+    console.log('');
+    
+    rl.question(chalk.green('请输入选择 (1/2) [默认: 1]: '), (answer) => {
+      rl.close();
+      
+      if (answer === '2' || answer.toLowerCase() === 'merge') {
+        resolve('merge');
+      } else {
+        resolve('override'); // 默认覆盖模式
+      }
+    });
+  });
+}
+
 program
   .name('vscode-config')
-  .description('一键安装 VSCode 配置工具（支持国内镜像加速）')
+  .description('一键安装 VSCode 配置工具（支持覆盖模式和扩展模式）')
   .version(packageJson.version);
 
 // install 命令
 program
   .command('install')
-  .description('安装最新的 VSCode 配置')
+  .description('安装最新的 VSCode 配置（支持覆盖模式和扩展模式）')
   .option('--force', '强制安装，跳过备份确认')
   .option('--timeout <seconds>', '扩展安装超时时间（秒）', '30')
   .option('--source <name>', '指定配置源 (github|gitee)', '')
   .option('--dry-run', '预览模式，不实际安装')
+  .option('--mode <mode>', '安装模式 (override|merge)', 'override')
   .action(async (options) => {
     try {
       console.log(chalk.cyan.bold('🚀 VSCode 配置安装工具'));
@@ -34,6 +63,19 @@ program
         console.log('');
       }
       
+      // 如果没有指定模式，交互式选择
+      if (!options.mode || options.mode === 'override') {
+        console.log(chalk.blue('🤝 交互式安装模式选择'));
+        console.log(chalk.gray('----------------------------------------'));
+        
+        // 如果没有明确指定模式，询问用户
+        if (!process.argv.includes('--mode')) {
+          options.mode = await selectInstallMode();
+          console.log(chalk.green(`✅ 已选择: ${options.mode === 'override' ? '覆盖模式' : '扩展模式'}`));
+          console.log('');
+        }
+      }
+      
       await installConfig(options);
       
       console.log('');
@@ -45,9 +87,10 @@ program
       console.log(chalk.gray('  3. 如有问题可查看备份文件'));
       console.log('');
       console.log(chalk.blue('💡 使用技巧:'));
-      console.log(chalk.gray('  • 运行 vscode-config status 查看安装状态'));
+      console.log(chalk.gray('  • 运行 @agile-team/vscode-config status 查看安装状态'));
       console.log(chalk.gray('  • 网络慢时使用 --timeout 60 增加超时时间'));
       console.log(chalk.gray('  • 使用 --source gitee 指定国内源'));
+      console.log(chalk.gray('  • 使用 --mode merge 保留个人设置'));
       
     } catch (error) {
       console.error('');
@@ -151,12 +194,13 @@ program
 // 如果没有参数，显示帮助和快速开始
 if (process.argv.length <= 2) {
   console.log(chalk.cyan.bold('🚀 VSCode 配置安装工具'));
-  console.log(chalk.gray(`版本 ${packageJson.version} | 支持双源加速`));
+  console.log(chalk.gray(`版本 ${packageJson.version} | 支持双源加速和双模式安装`));
   console.log('');
   console.log(chalk.blue('⚡ 快速开始:'));
-  console.log(chalk.white('  vscode-config install          # 安装最新配置'));
-  console.log(chalk.white('  vscode-config install --source gitee  # 使用国内源'));
-  console.log(chalk.white('  vscode-config status            # 检查配置状态'));
+  console.log(chalk.white('  @agile-team/vscode-config install          # 安装最新配置（覆盖模式）'));
+  console.log(chalk.white('  @agile-team/vscode-config install --mode merge  # 保留个人设置（扩展模式）'));
+  console.log(chalk.white('  @agile-team/vscode-config install --source gitee  # 使用国内源'));
+  console.log(chalk.white('  @agile-team/vscode-config status            # 检查配置状态'));
   console.log('');
   console.log(chalk.gray('使用 --help 查看所有命令和选项'));
   console.log('');
