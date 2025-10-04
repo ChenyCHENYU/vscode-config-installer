@@ -87,7 +87,7 @@ program
       console.log(chalk.gray('  3. 如有问题可查看备份文件'));
       console.log('');
       console.log(chalk.blue('💡 使用技巧:'));
-      console.log(chalk.gray('  • 运行 @agile-team/vscode-config status 查看安装状态'));
+      console.log(chalk.gray('  • 运行 vscode-config status 查看安装状态'));
       console.log(chalk.gray('  • 网络慢时使用 --timeout 60 增加超时时间'));
       console.log(chalk.gray('  • 使用 --source gitee 指定国内源'));
       console.log(chalk.gray('  • 使用 --mode merge 保留个人设置'));
@@ -197,10 +197,10 @@ if (process.argv.length <= 2) {
   console.log(chalk.gray(`版本 ${packageJson.version} | 支持双源加速和双模式安装`));
   console.log('');
   console.log(chalk.blue('⚡ 快速开始:'));
-  console.log(chalk.white('  @agile-team/vscode-config install          # 安装最新配置（覆盖模式）'));
-  console.log(chalk.white('  @agile-team/vscode-config install --mode merge  # 保留个人设置（扩展模式）'));
-  console.log(chalk.white('  @agile-team/vscode-config install --source gitee  # 使用国内源'));
-  console.log(chalk.white('  @agile-team/vscode-config status            # 检查配置状态'));
+  console.log(chalk.white('  vscode-config install          # 安装最新配置（覆盖模式）'));
+  console.log(chalk.white('  vscode-config install --mode merge  # 保留个人设置（扩展模式）'));
+  console.log(chalk.white('  vscode-config install --source gitee  # 使用国内源'));
+  console.log(chalk.white('  vscode-config status            # 检查配置状态'));
   console.log('');
   console.log(chalk.gray('使用 --help 查看所有命令和选项'));
   console.log('');

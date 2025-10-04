@@ -30,23 +30,23 @@ npm install -g @agile-team/vscode-config
 
 ```bash
 # 安装最新配置（交互式选择安装模式）
-@agile-team/vscode-config install
+vscode-config install
 
 # 使用扩展模式，保留个人设置
-@agile-team/vscode-config install --mode merge
+vscode-config install --mode merge
 
 # 使用国内镜像源
-@agile-team/vscode-config install --source gitee
+vscode-config install --source gitee
 
 # 网络较慢时增加超时时间
-@agile-team/vscode-config install --timeout 60
+vscode-config install --timeout 60
 ```
 
 就这么简单！🎉
 
 ### 交互式安装
 
-当您运行 `@agile-team/vscode-config install` 而不指定 `--mode` 参数时，工具会以交互式方式让您选择安装模式：
+当您运行 `vscode-config install` 而不指定 `--mode` 参数时，工具会以交互式方式让您选择安装模式：
 
 ```
 🔧 请选择安装模式：
@@ -64,10 +64,10 @@ npm install -g @agile-team/vscode-config
 
 | 命令 | 功能 | 示例 |
 |------|------|------|
-| `install` | 安装/更新 VSCode 配置 | `@agile-team/vscode-config install` |
-| `status` | 检查配置状态 | `@agile-team/vscode-config status` |
-| `restore` | 恢复备份配置 | `@agile-team/vscode-config restore` |
-| `clean` | 清理旧备份 | `@agile-team/vscode-config clean` |
+| `install` | 安装/更新 VSCode 配置 | `vscode-config install` |
+| `status` | 检查配置状态 | `vscode-config status` |
+| `restore` | 恢复备份配置 | `vscode-config restore` |
+| `clean` | 清理旧备份 | `vscode-config clean` |
 
 ### 安装选项
 
@@ -108,10 +108,10 @@ npm install -g @agile-team/vscode-config
 **使用示例**：
 ```bash
 # 交互式选择安装模式（推荐）
-@agile-team/vscode-config install
+vscode-config install
 
 # 显式指定覆盖模式
-@agile-team/vscode-config install --mode override
+vscode-config install --mode override
 ```
 
 ### 扩展模式 (merge)
@@ -131,10 +131,10 @@ npm install -g @agile-team/vscode-config
 **使用示例**：
 ```bash
 # 交互式选择扩展模式（推荐）
-@agile-team/vscode-config install
+vscode-config install
 
 # 直接指定扩展模式
-@agile-team/vscode-config install --mode merge
+vscode-config install --mode merge
 ```
 
 ### 模式对比
@@ -153,49 +153,49 @@ npm install -g @agile-team/vscode-config
 ```bash
 # 全新安装
 npm install -g @agile-team/vscode-config
-@agile-team/vscode-config install  # 交互式选择安装模式
+vscode-config install  # 交互式选择安装模式
 
 # 检查安装结果
-@agile-team/vscode-config status
+vscode-config status
 ```
 
 ### 场景二：团队配置同步
 ```bash
 # 获取最新团队配置（交互式选择安装模式）
-@agile-team/vscode-config install
+vscode-config install
 
 # 获取团队配置但保留个人设置（扩展模式）
-@agile-team/vscode-config install --mode merge
+vscode-config install --mode merge
 
 # 查看已安装扩展
-@agile-team/vscode-config status
+vscode-config status
 ```
 
 ### 场景三：网络环境差
 ```bash
 # 使用国内源 + 延长超时
-@agile-team/vscode-config install --source gitee --timeout 120
+vscode-config install --source gitee --timeout 120
 ```
 
 ### 场景四：配置回滚
 ```bash
 # 查看所有备份
-@agile-team/vscode-config restore --list
+vscode-config restore --list
 
 # 恢复最新备份
-@agile-team/vscode-config restore
+vscode-config restore
 
 # 恢复指定备份
-@agile-team/vscode-config restore --backup ~/path/to/backup
+vscode-config restore --backup ~/path/to/backup
 ```
 
 ### 场景五：维护清理
 ```bash
 # 清理 30 天前的备份
-@agile-team/vscode-config clean
+vscode-config clean
 
 # 清理 7 天前的备份
-@agile-team/vscode-config clean --older-than 7
+vscode-config clean --older-than 7
 ```
 
 ## 🔧 系统要求
@@ -208,7 +208,7 @@ npm install -g @agile-team/vscode-config
 ### 验证环境
 ```bash
 # 一键检查所有依赖
-@agile-team/vscode-config status
+vscode-config status
 
 # 手动验证
 node --version    # >= 14.0.0
@@ -252,13 +252,13 @@ code --version    # 任意版本
 ### 备份管理
 ```bash
 # 查看备份状态
-@agile-team/vscode-config status
+vscode-config status
 
 # 列出所有备份
-@agile-team/vscode-config restore --list
+vscode-config restore --list
 
 # 清理旧备份
-@agile-team/vscode-config clean --older-than 30
+vscode-config clean --older-than 30
 ```
 
 ## 🌐 双源加速
@@ -272,11 +272,11 @@ code --version    # 任意版本
 ### 智能切换
 ```bash
 # 自动选择最佳源（交互式选择安装模式）
-@agile-team/vscode-config install
+vscode-config install
 
 # 手动指定源
-@agile-team/vscode-config install --source github  # 使用 GitHub
-@agile-team/vscode-config install --source gitee   # 使用 Gitee
+vscode-config install --source github  # 使用 GitHub
+vscode-config install --source gitee   # 使用 Gitee
 ```
 
 ### 故障转移
@@ -290,7 +290,7 @@ code --version    # 任意版本
 ```bash
 # 症状：下载超时或失败
 # 解决方案：
-@agile-team/vscode-config install --source gitee --timeout 120  # 指定国内源和超时时间
+vscode-config install --source gitee --timeout 120  # 指定国内源和超时时间
 ```
 
 ### VSCode 未找到
@@ -313,7 +313,7 @@ code --version    # 任意版本
 
 # 解决方案：
 # 1. 重新运行安装（交互式选择安装模式）
-@agile-team/vscode-config install
+vscode-config install
 
 # 2. 手动安装特定扩展
 code --install-extension ms-python.python
@@ -332,7 +332,7 @@ sudo chown -R $(whoami) ~/.vscode/
 ## 📊 状态检查详解
 
 ```bash
-@agile-team/vscode-config status
+vscode-config status
 ```
 
 输出示例：
@@ -372,10 +372,10 @@ sudo chown -R $(whoami) ~/.vscode/
 ### 获取最新配置
 ```bash
 # 交互式更新（推荐）
-@agile-team/vscode-config install
+vscode-config install
 
 # 强制更新（跳过确认）
-@agile-team/vscode-config install --force
+vscode-config install --force
 ```
 
 ### 更新过程
@@ -414,7 +414,7 @@ npm install
 
 # 本地测试
 npm link
-@agile-team/vscode-config --help
+vscode-config --help
 
 # 运行测试
 npm test
