@@ -82,7 +82,12 @@ program
       
       console.log('');
       console.log(chalk.blue('🔄 下一步操作:'));
-      console.log(chalk.gray('  1. 重启 VSCode 以应用所有更改'));
+      // 检测是否在 VS Code 终端中运行
+      if (process.env.TERM_PROGRAM === 'vscode') {
+        console.log(chalk.gray('  1. 按 Ctrl+Shift+P 输入 "Reload Window" 重新加载窗口'));
+      } else {
+        console.log(chalk.gray('  1. 重启 VSCode 以应用所有更改'));
+      }
       console.log(chalk.gray('  2. 检查扩展是否正常工作'));
       console.log(chalk.gray('  3. 如有问题可查看备份文件'));
       console.log('');
