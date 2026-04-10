@@ -234,9 +234,9 @@ code --version    # 任意版本
 
 ### 扩展管理
 - 从 `extensions.list` 读取扩展列表
-- 单次批量安装，避免 VS Code 多窗口弹出
+- 通过 `exec()` 命令字符串方式调用，兼容 Windows `.cmd` 和新版 Node.js
+- 带 `[n/N]` 进度显示，解析 CLI 真实输出判断成功/失败
 - 自动跳过已安装扩展（大小写不敏感匹配）
-- 安装后通过 `code --list-extensions` 实际验证，不信任 exit code
 
 ## 💾 备份系统
 
