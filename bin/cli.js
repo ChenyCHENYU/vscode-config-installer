@@ -3,25 +3,29 @@
 const { program } = require('commander');
 const chalk = require('chalk');
 const { installConfig, CONFIG_SOURCES } = require('../lib/installer');
-const readline = require('readline');
+const prompts = require('prompts');
 const ui = require('../lib/ui');
 
 const packageJson = require('../package.json');
 
 async function selectInstallMode() {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => {
-    console.log('');
-    ui.infoBox('选择安装模式', [
-      `${chalk.cyan('1)')} ${chalk.white('覆盖模式')} ${chalk.gray('(override)')}  完全替换，确保团队一致`,
-      `${chalk.yellow('2)')} ${chalk.white('合并模式')} ${chalk.gray('(merge)')}     保留个人设置，只同步团队配置`,
-    ]);
-    console.log('');
-    rl.question(chalk.cyan('  请选择 (1/2) [默认: 1]: '), (answer) => {
-      rl.close();
-      resolve(answer === '2' || answer.toLowerCase() === 'merge' ? 'merge' : 'override');
-    });
+  console.log('');
+  const response = await prompts({
+    type: 'select',
+    name: 'mode',
+    message: '选择安装模式',
+    choices: [
+      { title: `${chalk.cyan('覆盖模式')} ${chalk.gray('(override)')}  完全替换，确保团队一致`, value: 'override' },
+      { title: `${chalk.yellow('合并模式')} ${chalk.gray('(merge)')}     保留个人设置，只同步团队配置`, value: 'merge' },
+    ],
+    initial: 0,
   });
+  if (response.mode === undefined) {
+    // 用户按 Ctrl+C 取消
+    console.log(chalk.yellow('\n  已取消'));
+    process.exit(0);
+  }
+  return response.mode;
 }
 
 program
@@ -127,6 +131,43 @@ program
     }
   });
 
+// upload 命令 - 上传本地配置到远程仓库
+program
+  .command('upload')
+  .description('将本地 VS Code 配置上传到团队配置仓库')
+  .option('--mode <mode>', '上传模式: override(覆盖) | merge(合并)', '')
+  .option('--repo <path>', '本地配置仓库路径（默认自动 clone 到临时目录）')
+  .option('--source <name>', '配置源 (github|gitee)', 'github')
+  .action(async (options) => {
+    const { uploadConfig } = require('../lib/uploader');
+    try {
+      ui.banner(packageJson.version);
+      // 如果没指定模式，交互选择
+      if (!options.mode) {
+        const response = await prompts({
+          type: 'select',
+          name: 'mode',
+          message: '选择上传模式',
+          choices: [
+            { title: `${chalk.cyan('覆盖模式')} ${chalk.gray('(override)')}  远程完全替换为我的配置`, value: 'override' },
+            { title: `${chalk.yellow('合并模式')} ${chalk.gray('(merge)')}     保留远程已有，仅追加我新增的`, value: 'merge' },
+          ],
+          initial: 0,
+        });
+        if (response.mode === undefined) {
+          console.log(chalk.yellow('\n  已取消'));
+          process.exit(0);
+        }
+        options.mode = response.mode;
+      }
+      await uploadConfig(options);
+    } catch (error) {
+      console.error('');
+      ui.errorBox('上传失败', [chalk.red(error.message)]);
+      process.exit(1);
+    }
+  });
+
 // 全局选项
 program
   .option('-v, --verbose', '显示详细日志')
@@ -154,10 +195,11 @@ if (process.argv.length <= 2) {
   console.log(chalk.gray(`版本 ${packageJson.version} | 支持双源加速和双模式安装`));
   console.log('');
   console.log(chalk.blue('⚡ 快速开始:'));
-  console.log(chalk.white('  vscode-config install          # 安装最新配置（覆盖模式）'));
-  console.log(chalk.white('  vscode-config install --mode merge  # 保留个人设置（扩展模式）'));
-  console.log(chalk.white('  vscode-config install --source gitee  # 使用国内源'));
-  console.log(chalk.white('  vscode-config status            # 检查配置状态'));
+  console.log(chalk.white('  vscode-config install               # 安装团队配置（箭头键选模式）'));
+  console.log(chalk.white('  vscode-config install --mode merge   # 保留个人设置，合并团队配置'));
+  console.log(chalk.white('  vscode-config upload                 # 上传本地配置到团队仓库'));
+  console.log(chalk.white('  vscode-config status                 # 检查配置状态'));
+  console.log(chalk.white('  vscode-config restore                # 一键恢复到安装前'));
   console.log('');
   console.log(chalk.gray('使用 --help 查看所有命令和选项'));
   console.log('');

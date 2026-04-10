@@ -50,15 +50,20 @@ vscode-config status
 
 | 命令 | 作用 |
 |------|------|
-| `vscode-config install` | 安装/同步团队配置 |
+| `vscode-config install` | 安装/同步团队配置（↑↓ 箭头选模式） |
 | `vscode-config install --force` | 跳过备份和交互确认，直接安装 |
 | `vscode-config install --mode merge` | 合并模式，保留个人设置 |
 | `vscode-config install --source gitee` | 使用 Gitee 国内源 |
 | `vscode-config install --timeout 120` | 设置扩展安装超时（秒） |
 | `vscode-config install --dry-run` | 预览将要安装的内容，不实际操作 |
 | `vscode-config install --force -v` | 安装并输出详细诊断日志 |
+| `vscode-config upload` | 将本地配置上传到团队仓库（↑↓ 选覆盖/合并） |
+| `vscode-config upload --mode override` | 覆盖远程，完全以本地为准 |
+| `vscode-config upload --mode merge` | 合并到远程，保留远程已有内容 |
+| `vscode-config upload --source gitee` | 上传到 Gitee 源 |
+| `vscode-config upload --repo <path>` | 指定本地已 clone 的配置仓库路径 |
 | `vscode-config status` | 检查 VS Code 版本、配置文件、已装扩展、备份 |
-| `vscode-config restore` | 恢复之前备份的配置（多备份时可交互选择） |
+| `vscode-config restore` | 一键恢复到安装前的备份（多备份可交互选择） |
 | `vscode-config restore --list` | 列出所有可用备份 |
 | `vscode-config restore --backup <path>` | 恢复指定路径的备份 |
 | `vscode-config clean` | 清理 30 天前的旧备份 |
@@ -95,9 +100,33 @@ ELECTRON_RUN_AS_NODE=1  Code.exe  cli.js  --install-extension xxx
 - **跨平台**：自动检测 Windows（Code.exe）、macOS（Electron）、Linux（code）的安装路径
 - **安全**：扩展 ID 格式校验，防止命令注入
 
+## 上传配置（作者/管理员）
+
+将你本地的 VS Code 配置上传到团队配置仓库，供其他成员同步。
+
+```bash
+# 交互式选择覆盖/合并模式（↑↓ 箭头键选择）
+vscode-config upload
+
+# 覆盖模式 — 远程完全替换为本地配置
+vscode-config upload --mode override
+
+# 合并模式 — 保留远程已有，仅追加本地新增
+vscode-config upload --mode merge
+
+# 上传到 Gitee
+vscode-config upload --source gitee
+```
+
+**覆盖 vs 合并**：
+- **覆盖**：远程 settings.json / keybindings.json / extensions.list 全部替换为你本地最新的。适合全面更新。
+- **合并**：远程已有的配置项和扩展保留不动，只追加你新增的 key 和扩展。适合增量更新。
+
+> 需要仓库写入权限（Git push 权限）。上传后团队成员运行 `vscode-config install` 即可同步。
+
 ## 备份与恢复
 
-每次安装前自动备份当前 settings.json、keybindings.json、snippets：
+**每次安装前自动备份**当前 settings.json、keybindings.json、snippets，确保你随时可以回滚。
 
 ```bash
 # 列出所有备份
