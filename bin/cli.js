@@ -63,13 +63,12 @@ program
         console.log('');
       }
       
-      // 如果没有指定模式，交互式选择
-      if (!options.mode || options.mode === 'override') {
-        console.log(chalk.blue('🤝 交互式安装模式选择'));
-        console.log(chalk.gray('----------------------------------------'));
-        
+      // 如果没有指定模式且非预览模式，交互式选择
+      if (!options.dryRun && (!options.mode || options.mode === 'override')) {
         // 如果没有明确指定模式，询问用户
         if (!process.argv.includes('--mode')) {
+          console.log(chalk.blue('🤝 交互式安装模式选择'));
+          console.log(chalk.gray('----------------------------------------'));
           options.mode = await selectInstallMode();
           console.log(chalk.green(`✅ 已选择: ${options.mode === 'override' ? '覆盖模式' : '扩展模式'}`));
           console.log('');
@@ -78,8 +77,9 @@ program
       
       await installConfig(options);
       
-      console.log('');
-      console.log(chalk.green.bold('🎉 配置安装完成！'));
+      // 预览模式下不显示后续操作提示
+      if (options.dryRun) return;
+      
       console.log('');
       console.log(chalk.blue('🔄 下一步操作:'));
       console.log(chalk.gray('  1. 重启 VSCode 以应用所有更改'));

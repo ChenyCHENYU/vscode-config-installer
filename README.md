@@ -56,7 +56,7 @@ vscode-config install --timeout 60
 请输入选择 (1/2) [默认: 1]:
 ```
 
-只需输入 `1` 或 `2``，或者直接按回车键使用默认的覆盖模式。
+只需输入 `1` 或 `2`，或者直接按回车键使用默认的覆盖模式。
 
 ## 📖 完整命令参考
 
@@ -189,7 +189,13 @@ vscode-config restore
 vscode-config restore --backup ~/path/to/backup
 ```
 
-### 场景五：维护清理
+### 场景五：安装前预览
+```bash
+# 预览模式：查看将安装的内容，不做任何更改
+vscode-config install --dry-run
+```
+
+### 场景六：维护清理
 ```bash
 # 清理 30 天前的备份
 vscode-config clean
@@ -224,10 +230,10 @@ code --version    # 任意版本
 - **snippets/**: 各种语言的代码片段
 
 ### 扩展管理
-- 从 `extensions.json` 读取扩展列表
-- 并发安装，提高效率
-- 自动跳过已安装扩展
-- 详细的安装统计报告
+- 从 `extensions.list` 读取扩展列表
+- 串行安装，带 `[n/N]` 进度显示，避免多窗口弹出
+- 自动跳过已安装扩展（大小写不敏感匹配）
+- 安装后批量验证，详细的安装统计报告
 
 ## 💾 备份系统
 
