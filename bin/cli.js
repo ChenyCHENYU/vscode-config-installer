@@ -137,7 +137,7 @@ program
   .description('将本地 VS Code 配置上传到团队配置仓库')
   .option('--mode <mode>', '上传模式: override(覆盖) | merge(合并)', '')
   .option('--repo <path>', '本地配置仓库路径（默认自动 clone 到临时目录）')
-  .option('--source <name>', '配置源 (github|gitee)', 'github')
+  .option('--source <name>', '配置源 (github|gitee|all)', 'all')
   .action(async (options) => {
     const { uploadConfig } = require('../lib/uploader');
     try {

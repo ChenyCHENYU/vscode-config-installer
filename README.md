@@ -57,10 +57,11 @@ vscode-config status
 | `vscode-config install --timeout 120` | 设置扩展安装超时（秒） |
 | `vscode-config install --dry-run` | 预览将要安装的内容，不实际操作 |
 | `vscode-config install --force -v` | 安装并输出详细诊断日志 |
-| `vscode-config upload` | 将本地配置上传到团队仓库（↑↓ 选覆盖/合并） |
+| `vscode-config upload` | 同时推送到 GitHub + Gitee（默认 all） |
 | `vscode-config upload --mode override` | 覆盖远程，完全以本地为准 |
 | `vscode-config upload --mode merge` | 合并到远程，保留远程已有内容 |
-| `vscode-config upload --source gitee` | 上传到 Gitee 源 |
+| `vscode-config upload --source github` | 只推送到 GitHub |
+| `vscode-config upload --source gitee` | 只推送到 Gitee |
 | `vscode-config upload --repo <path>` | 指定本地已 clone 的配置仓库路径 |
 | `vscode-config status` | 检查 VS Code 版本、配置文件、已装扩展、备份 |
 | `vscode-config restore` | 一键恢复到安装前的备份（多备份可交互选择） |
@@ -105,16 +106,12 @@ ELECTRON_RUN_AS_NODE=1  Code.exe  cli.js  --install-extension xxx
 将你本地的 VS Code 配置上传到团队配置仓库，供其他成员同步。
 
 ```bash
-# 交互式选择覆盖/合并模式（↑↓ 箭头键选择）
+# 同时推送到 GitHub + Gitee（默认）
 vscode-config upload
-
-# 覆盖模式 — 远程完全替换为本地配置
 vscode-config upload --mode override
 
-# 合并模式 — 保留远程已有，仅追加本地新增
-vscode-config upload --mode merge
-
-# 上传到 Gitee
+# 只推送单个源
+vscode-config upload --source github
 vscode-config upload --source gitee
 ```
 
