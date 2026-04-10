@@ -140,6 +140,48 @@ vscode-config install --source gitee --timeout 120
 vscode-config status
 ```
 
+## 安全测试指南
+
+已经有自己的 VS Code 配置，想无损试用？按以下流程操作：
+
+### 1. 先预览，不改任何文件
+
+```bash
+vscode-config install --dry-run
+```
+
+会显示将要同步的 settings、keybindings 和扩展列表，**不做任何写入**。
+
+### 2. 正式安装（自动备份）
+
+```bash
+vscode-config install          # 交互式选择覆盖/合并模式
+# 或
+vscode-config install --mode merge   # 只添加团队配置，保留你的个人设置
+```
+
+安装前会自动备份你当前的 `settings.json`、`keybindings.json`、`snippets` 到 `backup-<timestamp>` 目录。
+
+> **扩展只增不减**：工具只会安装团队列表中的扩展，**绝不会卸载你已有的扩展**。
+
+### 3. 随时回滚
+
+```bash
+vscode-config restore          # 恢复最新备份（settings + keybindings + snippets）
+```
+
+多个备份时支持交互式选择。回滚后重启 VS Code 即可恢复原状。
+
+> 唯一不会自动回滚的是**已安装的扩展**（因为只增不减）。如需卸载某个扩展，在 VS Code 扩展面板手动操作即可。
+
+### 完整流程一览
+
+```
+预览 → 安装(自动备份) → 不满意? → restore 回滚
+  ↓
+满意 → 继续使用，团队更新后再跑一次 install
+```
+
 ## 常见场景
 
 ### 新人入职

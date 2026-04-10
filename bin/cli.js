@@ -4,33 +4,22 @@ const { program } = require('commander');
 const chalk = require('chalk');
 const { installConfig, CONFIG_SOURCES } = require('../lib/installer');
 const readline = require('readline');
+const ui = require('../lib/ui');
 
-// 版本信息
 const packageJson = require('../package.json');
 
-/**
- * 交互式选择安装模式
- */
 async function selectInstallMode() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise((resolve) => {
-    console.log(chalk.blue('🔧 请选择安装模式：'));
-    console.log(chalk.cyan('  1) 覆盖模式 (override) - 完全替换现有配置，确保团队配置一致性'));
-    console.log(chalk.yellow('  2) 扩展模式 (merge) - 保留个人设置，只添加或更新团队配置'));
     console.log('');
-    
-    rl.question(chalk.green('请输入选择 (1/2) [默认: 1]: '), (answer) => {
+    ui.infoBox('选择安装模式', [
+      `${chalk.cyan('1)')} ${chalk.white('覆盖模式')} ${chalk.gray('(override)')}  完全替换，确保团队一致`,
+      `${chalk.yellow('2)')} ${chalk.white('合并模式')} ${chalk.gray('(merge)')}     保留个人设置，只同步团队配置`,
+    ]);
+    console.log('');
+    rl.question(chalk.cyan('  请选择 (1/2) [默认: 1]: '), (answer) => {
       rl.close();
-      
-      if (answer === '2' || answer.toLowerCase() === 'merge') {
-        resolve('merge');
-      } else {
-        resolve('override'); // 默认覆盖模式
-      }
+      resolve(answer === '2' || answer.toLowerCase() === 'merge' ? 'merge' : 'override');
     });
   });
 }
@@ -51,80 +40,44 @@ program
   .option('--mode <mode>', '安装模式 (override|merge)', 'override')
   .action(async (options) => {
     try {
-      console.log(chalk.cyan.bold('🚀 VSCode 配置安装工具'));
-      console.log(chalk.gray('======================================='));
-      console.log(chalk.gray(`版本: ${packageJson.version}`));
-      console.log(chalk.gray(`配置源: ${CONFIG_SOURCES.map(s => s.name).join(' → ')}`));
-      console.log('');
-      
-      // 预览模式
+      ui.banner(packageJson.version);
+
       if (options.dryRun) {
-        console.log(chalk.yellow('🔍 预览模式 - 不会实际安装'));
+        console.log(chalk.yellow('  🔍 预览模式 — 不会实际安装'));
         console.log('');
       }
       
-      // 如果没有指定模式且非预览/强制模式，交互式选择
       if (!options.dryRun && !options.force && (!options.mode || options.mode === 'override')) {
-        // 如果没有明确指定模式，询问用户
         if (!process.argv.includes('--mode')) {
-          console.log(chalk.blue('🤝 交互式安装模式选择'));
-          console.log(chalk.gray('----------------------------------------'));
           options.mode = await selectInstallMode();
-          console.log(chalk.green(`✅ 已选择: ${options.mode === 'override' ? '覆盖模式' : '扩展模式'}`));
-          console.log('');
+          console.log(`  ${ui.symbols.success} ${chalk.green(`已选择: ${options.mode === 'override' ? '覆盖模式' : '合并模式'}`)}`);
         }
       }
       
       await installConfig(options);
       
-      // 预览模式下不显示后续操作提示
       if (options.dryRun) return;
-      
+
       console.log('');
-      console.log(chalk.blue('🔄 下一步操作:'));
-      // 检测是否在 VS Code 终端中运行
-      if (process.env.TERM_PROGRAM === 'vscode') {
-        console.log(chalk.gray('  1. 按 Ctrl+Shift+P 输入 "Reload Window" 重新加载窗口'));
-      } else {
-        console.log(chalk.gray('  1. 重启 VSCode 以应用所有更改'));
-      }
-      console.log(chalk.gray('  2. 检查扩展是否正常工作'));
-      console.log(chalk.gray('  3. 如有问题可查看备份文件'));
-      console.log('');
-      console.log(chalk.blue('💡 使用技巧:'));
-      console.log(chalk.gray('  • 运行 vscode-config status 查看安装状态'));
-      console.log(chalk.gray('  • 网络慢时使用 --timeout 60 增加超时时间'));
-      console.log(chalk.gray('  • 使用 --source gitee 指定国内源'));
-      console.log(chalk.gray('  • 使用 --mode merge 保留个人设置'));
+      ui.infoBox('下一步', [
+        process.env.TERM_PROGRAM === 'vscode'
+          ? chalk.white('按 Ctrl+Shift+P → "Reload Window" 重新加载')
+          : chalk.white('重启 VSCode 以应用所有更改'),
+        chalk.gray('运行 vscode-config status 查看状态'),
+        chalk.gray('出问题? → vscode-config restore 恢复备份'),
+      ]);
       
     } catch (error) {
       console.error('');
-      console.error(chalk.red.bold('❌ 安装失败:'));
-      console.error(chalk.red(error.message));
-      console.error('');
-      
-      // 智能错误提示
+      const lines = [chalk.red(error.message)];
       if (error.message.includes('不可用') || error.message.includes('超时')) {
-        console.error(chalk.yellow('🌐 网络问题排查:'));
-        console.error(chalk.gray('  • 检查网络连接是否正常'));
-        console.error(chalk.gray('  • 尝试使用国内源: --source gitee'));
-        console.error(chalk.gray('  • 增加超时时间: --timeout 60'));
-      } else if (error.message.includes('VSCode')) {
-        console.error(chalk.yellow('📝 VSCode 问题排查:'));
-        console.error(chalk.gray('  • 确认 VSCode 已正确安装'));
-        console.error(chalk.gray('  • 确认 code 命令在 PATH 中'));
-        console.error(chalk.gray('  • 尝试重新安装 VSCode'));
+        lines.push('', chalk.yellow('网络问题:'), chalk.gray('  --source gitee  使用国内源'), chalk.gray('  --timeout 60    增加超时'));
+      } else if (error.message.includes('VS Code') || error.message.includes('VSCode')) {
+        lines.push('', chalk.yellow('VS Code 问题:'), chalk.gray('  确认已安装且 code 在 PATH 中'));
       } else if (error.message.includes('Git')) {
-        console.error(chalk.yellow('🔧 Git 问题排查:'));
-        console.error(chalk.gray('  • 确认 Git 已正确安装'));
-        console.error(chalk.gray('  • 确认 git 命令在 PATH 中'));
-      } else {
-        console.error(chalk.yellow('💡 通用故障排查:'));
-        console.error(chalk.gray('  • 检查磁盘空间是否充足'));
-        console.error(chalk.gray('  • 尝试以管理员身份运行'));
-        console.error(chalk.gray('  • 关闭杀毒软件后重试'));
+        lines.push('', chalk.yellow('Git 问题:'), chalk.gray('  确认 Git 已安装且在 PATH 中'));
       }
-      
+      ui.errorBox('安装失败', lines);
       process.exit(1);
     }
   });

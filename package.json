@@ -1,6 +1,6 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "One-command VSCode configuration installer for team standard setup",
   "main": "lib/installer.js",
   "bin": {
@@ -35,8 +35,12 @@
     "node": ">=16.7.0"
   },
   "dependencies": {
+    "boxen": "^5.1.2",
     "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5",
     "commander": "^9.5.0",
+    "gradient-string": "^3.0.0",
+    "log-symbols": "^4.1.0",
     "ora": "^5.4.1"
   },
   "scripts": {
