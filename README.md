@@ -26,8 +26,8 @@
 │                                              │
 │  1. 下载远程配置文件                           │
 │  2. 写入本地 VS Code 配置目录                  │
-│  3. 调用 code --install-extension 批量安装     │
-│  4. 通过 code --list-extensions 验证结果       │
+│  3. 直接调用 Code.exe + cli.js 安装扩展        │
+│  4. 通过 --list-extensions 验证结果            │
 └──────────────────────────────────────────────┘
 ```
 
@@ -80,18 +80,20 @@ vscode-config status
 
 ## 扩展安装机制
 
-v2.3 使用**单次 `code` CLI 批量调用**安装所有扩展：
+v3.0 彻底解决了 Windows 下安装扩展弹窗和失败问题：
+
+**核心改进**：不再调用 `code` / `code.cmd` 脚本，而是**直接调用 Code.exe + cli.js**。
 
 ```
-code --install-extension ext1 --install-extension ext2 --install-extension ext3 ...
+# v3.0 实际执行的命令（用户无需关心）：
+ELECTRON_RUN_AS_NODE=1  Code.exe  cli.js  --install-extension xxx
 ```
 
-- **一次调用**安装全部扩展，VS Code 只激活一次窗口（不会反复弹窗）
-- 根据 `stdout` / `stderr` 输出逐个解析每个扩展的安装结果，不依赖 exit code
-- 安装完成后通过 `code --list-extensions` 二次验证，确认真实安装
-- 命令行超长时（Windows 8K 限制）自动分批
-- 批量模式异常时自动回退到 `execSync` 逐个安装（Plan B）
-- 使用 `exec()` 命令字符串方式，兼容 Windows `.cmd`（无 `spawn` ENOENT 问题）
+- **零弹窗**：`ELECTRON_RUN_AS_NODE=1` 让 Code.exe 以 Node.js 模式运行 CLI 脚本，不启动 VS Code GUI
+- **输出可靠**：stdout 直接返回 `successfully installed` / `already installed`，不经过 `.cmd` 脚本中转
+- **逐个安装 + 最终验证**：每个扩展独立安装，最后用 `--list-extensions` 核实所有结果
+- **跨平台**：自动检测 Windows（Code.exe）、macOS（Electron）、Linux（code）的安装路径
+- **安全**：扩展 ID 格式校验，防止命令注入
 
 ## 备份与恢复
 
@@ -181,7 +183,7 @@ vscode-config install --dry-run
 
 | 症状 | 解决方案 |
 |------|----------|
-| `code command not found` | 安装 VS Code 并确保 `code` 在 PATH 中 |
+| `VS Code 未检测到` | 安装 VS Code 并确保 `code` 在 PATH 中 |
 | 扩展安装超时 | `--timeout 120` 增加超时，或 `--source gitee` 用国内源 |
 | 部分扩展安装失败 | 工具会给出手动安装命令，复制执行即可 |
 | 想看详细日志 | 加 `-v` 参数：`vscode-config install --force -v` |
