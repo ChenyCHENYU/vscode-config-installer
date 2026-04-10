@@ -63,8 +63,8 @@ program
         console.log('');
       }
       
-      // 如果没有指定模式且非预览模式，交互式选择
-      if (!options.dryRun && (!options.mode || options.mode === 'override')) {
+      // 如果没有指定模式且非预览/强制模式，交互式选择
+      if (!options.dryRun && !options.force && (!options.mode || options.mode === 'override')) {
         // 如果没有明确指定模式，询问用户
         if (!process.argv.includes('--mode')) {
           console.log(chalk.blue('🤝 交互式安装模式选择'));

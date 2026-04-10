@@ -1,6 +1,6 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "One-command VSCode configuration installer for team standard setup",
   "main": "lib/installer.js",
   "bin": {
@@ -32,9 +32,8 @@
     "url": "https://github.com/ChenyCHENYU/vscode-config-installer/issues"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=22.0.0"
   },
-  "preferGlobal": true,
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^9.5.0",

@@ -2,9 +2,9 @@
 
 🚀 一键安装团队标准的 VSCode 配置，支持双源加速和智能备份管理。
 
-[![npm version](https://badge.fury.io/js/vscode-config-installer.svg)](https://badge.fury.io/js/vscode-config-installer)
+[![npm version](https://img.shields.io/npm/v/%40agile-team%2Fvscode-config)](https://www.npmjs.com/package/@agile-team/vscode-config)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org/)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)](https://nodejs.org/)
 
 ## ✨ 特性
 
@@ -40,6 +40,9 @@ vscode-config install --source gitee
 
 # 网络较慢时增加超时时间
 vscode-config install --timeout 60
+
+# 强制安装，跳过备份和交互确认
+vscode-config install --force
 ```
 
 就这么简单！🎉
@@ -75,7 +78,7 @@ vscode-config install --timeout 60
 |------|------|--------|
 | `--source <name>` | 指定配置源 (github/gitee) | 自动选择 |
 | `--timeout <seconds>` | 扩展安装超时时间 | 30 |
-| `--force` | 强制安装，跳过备份确认 | false |
+| `--force` | 强制安装，跳过备份和交互确认 | false |
 | `--dry-run` | 预览模式，不实际安装 | false |
 | `--mode <mode>` | 安装模式 (override/merge) | override |
 
@@ -120,7 +123,7 @@ vscode-config install --mode override
 **特点**：
 - 🔄 保留现有个人配置
 - ➕ 添加团队标准配置
-- 🎯 智能合并，避免冲突
+- 🎯 智能深度合并，递归合并嵌套配置
 - 🛠️ 更灵活，适应个人习惯
 
 **适用场景**：
@@ -182,7 +185,7 @@ vscode-config install --source gitee --timeout 120
 # 查看所有备份
 vscode-config restore --list
 
-# 恢复最新备份
+# 恢复最新备份（多个备份时可交互式选择）
 vscode-config restore
 
 # 恢复指定备份
@@ -207,7 +210,7 @@ vscode-config clean --older-than 7
 ## 🔧 系统要求
 
 ### 必需软件
-- **Node.js**: >= 14.0.0
+- **Node.js**: >= 22.0.0
 - **Git**: 用于验证系统环境
 - **VSCode**: 已安装并添加到 PATH
 
@@ -217,7 +220,7 @@ vscode-config clean --older-than 7
 vscode-config status
 
 # 手动验证
-node --version    # >= 14.0.0
+node --version    # >= 22.0.0
 git --version     # 任意版本
 code --version    # 任意版本
 ```
