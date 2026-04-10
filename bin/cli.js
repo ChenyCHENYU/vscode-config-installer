@@ -182,14 +182,13 @@ program
     }
   });
 
-// 默认显示帮助
-program
-  .command('*', { hidden: true })
-  .action((cmd) => {
-    console.log(chalk.yellow(`未知命令: ${cmd}`));
-    console.log(chalk.gray('使用 --help 查看可用命令。'));
-    program.help();
-  });
+// 未知命令处理（commander v9+ 推荐用 addHelpCommand + exitOverride）
+program.on('command:*', () => {
+  const unknownCmd = program.args[0];
+  console.log(chalk.yellow(`未知命令: ${unknownCmd}`));
+  console.log(chalk.gray('使用 --help 查看可用命令。'));
+  process.exit(1);
+});
 
 // 如果没有参数，显示帮助和快速开始
 if (process.argv.length <= 2) {
