@@ -208,6 +208,10 @@ vscode-config install --mode merge
 
 # 网络差
 vscode-config install --source gitee --timeout 120
+
+# 云桌面 / 内网
+npm i -g @agile-team/vscode-config @agile-team/vscode-config-extensions
+vscode-config install
 ```
 
 ---
@@ -216,23 +220,37 @@ vscode-config install --source gitee --timeout 120
 
 配置文件内置离线兜底（`defaults/`），远程不可用时自动读取包内配置。
 
-扩展安装依赖编辑器 marketplace，不可用时按以下方案处理：
+扩展安装依赖编辑器 marketplace，不可用时工具会自动降级：
 
-| 场景 | 方案 |
-|------|------|
-| **偶尔有网** | 在有网时执行一次 `vscode-config install`，扩展本地持久保留 |
-| **云桌面（可访问 npm）** | `npm i -g @agile-team/vscode-config-extensions`，主工具**自动检测** |
-| **手动指定 .vsix** | `vscode-config install --extensions-dir <目录>` |
-| **环境变量** | 设置 `VSCODE_CONFIG_EXTENSIONS_DIR=<目录>` |
+```
+扩展安装优先级：
+  1. --extensions-dir 参数          ← 显式指定 .vsix 目录
+  2. VSCODE_CONFIG_EXTENSIONS_DIR   ← 环境变量
+  3. @agile-team/vscode-config-extensions ← 伴侣 npm 包（自动检测）
+  4. 在线 marketplace              ← 默认
+```
+
+### 三种场景
+
+| 场景 | npm | marketplace | 方案 |
+|------|:---:|:-----------:|------|
+| **外网本地** | ✅ | ✅ | 直接 `vscode-config install` |
+| **内网本地** | ✅ | ❌ | 在有网时先执行一次 install，扩展本地持久保留 |
+| **云桌面内网** | ✅ | ❌ | 安装伴侣包，主工具自动检测 |
 
 ### 云桌面一键安装（推荐）
 
 ```bash
+# 一条命令搞定，无需额外配置
 npm i -g @agile-team/vscode-config @agile-team/vscode-config-extensions
-vscode-config install   # 自动检测离线扩展包，无需额外参数
+vscode-config install
 ```
 
-### 管理员维护 .vsix
+主工具自动发现伴侣包中的 `.vsix` 文件，无需 `--extensions-dir` 参数。
+
+> **注意**: 伴侣包不含 AI 类扩展（tongyi-lingma / copilot-chat / roo-cline / cline 等），因为它们在内网无法连接 AI 服务。
+
+### 管理员维护
 
 ```bash
 # 下载 .vsix（有网机器）
@@ -240,6 +258,11 @@ vscode-config download-extensions --output ./vsix-cache
 
 # 全量更新最新版
 vscode-config download-extensions --output ./vsix-cache --force
+
+# 更新伴侣包（拷贝到伴侣包目录后重新发布）
+vscode-config download-extensions --output packages/vscode-config-extensions/extensions --force
+cd packages/vscode-config-extensions
+npm publish --access public
 ```
 
 ---
@@ -250,7 +273,7 @@ vscode-config download-extensions --output ./vsix-cache --force
 |------|----------|
 | `XXX 未检测到` | 安装对应编辑器并确保 CLI 命令在 PATH 中 |
 | 扩展安装超时 | `--timeout 120` 或 `--source gitee` |
-| 所有扩展均失败 | 可能处于内网，参考「内网 / 离线环境」章节 |
+| 所有扩展均失败 | 可能处于内网，参考「内网 / 离线 / 云桌面」章节 |
 | 部分扩展失败 | 工具会输出手动安装命令，复制执行即可 |
 | 需要回滚 | `vscode-config restore` |
 | 想看详细日志 | `vscode-config install --force -v` |
@@ -297,7 +320,8 @@ vscode-config upload --editor windsurf    # 上传 Windsurf 的配置
 
 - [配置仓库](https://github.com/ChenyCHENYU/vscode-config) — 团队共享配置
 - [问题反馈](https://github.com/ChenyCHENYU/vscode-config-installer/issues) — Bug & 建议
-- [npm](https://www.npmjs.com/package/@agile-team/vscode-config) — 安装
+- [npm 主包](https://www.npmjs.com/package/@agile-team/vscode-config) — 安装
+- [npm 伴侣包](https://www.npmjs.com/package/@agile-team/vscode-config-extensions) — 离线扩展
 - [CHANGELOG](./CHANGELOG.md) — 版本记录
 
 ---

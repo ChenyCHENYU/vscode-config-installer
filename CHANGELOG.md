@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.10.1] - 2025-04-17
+
+### docs
+- **README**: 完善内网/离线/云桌面章节，补充优先级链、三种场景对比表、伴侣包说明、管理员维护流程
+- **README**: 常见场景新增云桌面示例，链接新增伴侣包 npm 地址
+
+### chore
+- 全量内测通过: ESLint 零警告 / 41 测试全通过 / 伴侣包自动检测 / 优先级链 / 主包 34KB 无泄漏
+
 ## [3.10.0] - 2025-04-17
 
 ### feat
