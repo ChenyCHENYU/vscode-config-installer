@@ -9,7 +9,8 @@
   "files": [
     "bin/",
     "lib/",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "keywords": [
     "vscode",
@@ -49,7 +50,37 @@
   },
   "scripts": {
     "start": "node bin/cli.js",
-    "test": "echo \"No tests yet\"",
-    "prepublishOnly": "echo \"Publishing @agile-team/vscode-config...\""
+    "test": "node --test test/*.test.js",
+    "prepublishOnly": "echo \"Publishing @agile-team/vscode-config...\"",
+    "prepare": "husky",
+    "cz": "git-cz",
+    "lint": "eslint lib/ bin/ --fix",
+    "format": "prettier --write \"lib/\" \"bin/\" \"*.js\""
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@robot-admin/git-standards": "^1.0.3",
+    "commitizen": "^4.3.1",
+    "cz-customizable": "^7.5.4",
+    "eslint": "^10.2.0",
+    "globals": "^17.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  },
+  "lint-staged": {
+    "{lib,bin}/**/*.js": [
+      "eslint --fix --no-cache",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }

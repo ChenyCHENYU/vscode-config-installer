@@ -15,14 +15,18 @@ tests/
 coverage/
 .nyc_output
 
-# Linting
+# Linting & Git standards
 .eslintrc*
 .eslintignore
-.prettierrc*
+.prettier*
+.cz-config.js
+commitlint.config.js
+eslint.config.*
+.editorconfig
+.husky/
 
-# Documentation (except README.md)
+# Documentation (except README.md and CHANGELOG.md)
 docs/
-CHANGELOG.md
 CONTRIBUTING.md
 
 # IDE
