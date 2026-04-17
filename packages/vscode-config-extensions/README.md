@@ -14,6 +14,8 @@ vscode-config install
 
 主工具会自动检测本包内的 `.vsix` 文件，无需任何额外配置。
 
+> **注意**: 本包不含 AI 类扩展（tongyi-lingma / copilot-chat / roo-cline / cline 等），因为这些扩展在内网环境下无法连接 AI 服务，安装后也无法使用。
+
 ## 适用场景
 
 - 云桌面环境（可访问 npm，不可访问 VS Code marketplace）
