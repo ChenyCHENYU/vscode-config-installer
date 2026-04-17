@@ -89,6 +89,9 @@ vscode-config restore                     # 一键恢复到安装前
 |------|------|
 | `--output <dir>` | 输出目录（默认 `vsix-cache`） |
 | `--force` | 强制重新下载所有扩展（覆盖已有文件） |
+| `--merge` | 只增不删 — 保留目录中不在列表里的 .vsix |
+
+> 默认**覆盖模式**: 以 `extensions.list` 为准，自动删除目录中已废弃的 .vsix。
 
 ### status / restore / clean
 

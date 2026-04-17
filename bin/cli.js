@@ -332,17 +332,19 @@ program
 
 // download-extensions 命令 - 批量下载 .vsix（管理员用）
 program
-  .command("download-extensions")
-  .description("批量下载扩展 .vsix 文件（用于内网离线安装）")
-  .option("--output <dir>", "输出目录", "vsix-cache")
-  .option("--force", "强制重新下载所有扩展（覆盖已有文件）")
-  .action((options) => {
-    const args = ["scripts/download-extensions.js"];
-    if (options.output) args.push("--output", options.output);
-    if (options.force) args.push("--force");
-    require("child_process").execFileSync(process.execPath, args, {
-      cwd: path.join(__dirname, ".."),
-      stdio: "inherit",
+  .command('download-extensions')
+  .description('批量下载扩展 .vsix 文件（用于内网离线安装）')
+  .option('--output <dir>', '输出目录', 'vsix-cache')
+  .option('--force', '强制重新下载所有扩展（覆盖已有文件）')
+  .option('--merge', '只增不删（保留目录中不在 list 里的 .vsix）')
+  .action(options => {
+    const args = ['scripts/download-extensions.js'];
+    if (options.output) args.push('--output', options.output);
+    if (options.force) args.push('--force');
+    if (options.merge) args.push('--merge');
+    require('child_process').execFileSync(process.execPath, args, {
+      cwd: path.join(__dirname, '..'),
+      stdio: 'inherit',
     });
   });
 

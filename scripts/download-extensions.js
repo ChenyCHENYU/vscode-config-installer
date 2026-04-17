@@ -4,11 +4,14 @@
  * 批量下载 extensions.list 中所有扩展的 .vsix 文件
  *
  * 用法:
- *   node scripts/download-extensions.js [--output <dir>] [--force]
+ *   node scripts/download-extensions.js [--output <dir>] [--force] [--merge]
  *
  * --force  强制重新下载所有扩展（覆盖已有文件）
+ * --merge  只增不删 — 保留目录中已有但不在 extensions.list 中的 .vsix
+ *
+ * 默认行为（覆盖模式）: 以 extensions.list 为准，删除不在列表中的 .vsix 文件
  * 默认输出到项目根目录的 vsix-cache/
- * .vsix 文件命名: publisher.name-latest.vsix
+ * .vsix 文件命名: publisher.name.vsix
  */
 
 const https = require('https');
@@ -23,6 +26,7 @@ const args = process.argv.slice(2);
 const outIdx = args.indexOf('--output');
 const OUTPUT_DIR = outIdx >= 0 && args[outIdx + 1] ? path.resolve(args[outIdx + 1]) : DEFAULT_OUTPUT;
 const FORCE = args.includes('--force');
+const MERGE = args.includes('--merge');
 
 /**
  * 从 VS Code Marketplace 下载 .vsix
@@ -65,8 +69,9 @@ function _download(url, destPath, timeout, redirects) {
 }
 
 async function main() {
+  const modeLabel = MERGE ? '合并模式（只增不删）' : '覆盖模式（以 list 为准）';
   console.log(
-    `[download-extensions] 输出目录: ${OUTPUT_DIR}${FORCE ? ' (强制更新)' : ''}\n`
+    `[download-extensions] 输出目录: ${OUTPUT_DIR}${FORCE ? ' (强制更新)' : ''} [${modeLabel}]\n`
   );
 
   if (!fs.existsSync(EXT_LIST)) {
@@ -81,8 +86,8 @@ async function main() {
   const content = fs.readFileSync(EXT_LIST, 'utf8');
   const extensions = content
     .split('\n')
-    .map((l) => l.trim())
-    .filter((l) => l && !l.startsWith('#') && !l.startsWith('//'));
+    .map(l => l.trim())
+    .filter(l => l && !l.startsWith('#') && !l.startsWith('//'));
 
   console.log(`共 ${extensions.length} 个扩展\n`);
 
@@ -123,7 +128,27 @@ async function main() {
     }
   }
 
-  console.log(`\n[download-extensions] 完成: ${success} 成功, ${failed} 失败`);
+  // 覆盖模式: 删除不在 extensions.list 中的 .vsix
+  let cleaned = 0;
+  if (!MERGE) {
+    const expectedFiles = new Set(
+      extensions.map(e => `${e}.vsix`.toLowerCase())
+    );
+    const existing = fs
+      .readdirSync(OUTPUT_DIR)
+      .filter(f => f.endsWith('.vsix'));
+    for (const file of existing) {
+      if (!expectedFiles.has(file.toLowerCase())) {
+        fs.unlinkSync(path.join(OUTPUT_DIR, file));
+        console.log(`  🗑️  ${file} — 已从列表移除，删除`);
+        cleaned++;
+      }
+    }
+  }
+
+  console.log(
+    `\n[download-extensions] 完成: ${success} 成功, ${failed} 失败${cleaned > 0 ? `, ${cleaned} 清理` : ''}`
+  );
   if (errors.length > 0) {
     console.log('\n失败列表:');
     for (const e of errors) {

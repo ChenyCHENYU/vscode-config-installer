@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.11.0] - 2025-04-17
+
+### feat
+- **download-extensions**: 默认覆盖模式 — 以 `extensions.list` 为准，自动删除目录中已废弃的 .vsix 文件
+- **download-extensions**: 新增 `--merge` 选项 — 只增不删，保留目录中已有但不在列表中的 .vsix
+
+### docs
+- **README**: 更新 `download-extensions` 命令参考，补充 `--merge` 和覆盖模式说明
+
 ## [3.10.1] - 2025-04-17
 
 ### docs
