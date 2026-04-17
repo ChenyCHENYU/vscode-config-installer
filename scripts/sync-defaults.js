@@ -18,8 +18,18 @@ const path = require('path');
 const DEFAULTS_DIR = path.join(__dirname, '..', 'defaults');
 
 const SOURCES = [
-  { name: 'GitHub', baseUrl: 'https://raw.githubusercontent.com/ChenyCHENYU/vscode-config/main' },
-  { name: 'Gitee', baseUrl: 'https://gitee.com/ycyplus163/vscode-config/raw/main' },
+  {
+    name: 'GitHub',
+    baseUrl:
+      process.env.VSCODE_CONFIG_GITHUB_URL ||
+      'https://raw.githubusercontent.com/ChenyCHENYU/vscode-config/main',
+  },
+  {
+    name: 'Gitee',
+    baseUrl:
+      process.env.VSCODE_CONFIG_GITEE_URL ||
+      'https://gitee.com/ycyplus163/vscode-config/raw/main',
+  },
 ];
 
 const FILES = ['settings.json', 'keybindings.json', 'extensions.list'];

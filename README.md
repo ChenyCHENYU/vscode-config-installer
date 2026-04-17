@@ -63,46 +63,46 @@ vscode-config restore                     # 一键恢复到安装前
 
 ### install — 安装/同步配置
 
-| 选项 | 说明 |
-|------|------|
-| `--editor <name>` | 目标编辑器：`vscode` / `cursor` / `windsurf` / `kiro` / `all` |
-| `--mode <mode>` | `override`（覆盖，默认）或 `merge`（合并） |
-| `--force` | 跳过备份和交互确认 |
-| `--dry-run` | 预览模式，不做任何写入 |
-| `--source <name>` | 配置源：`github` / `gitee` |
-| `--timeout <sec>` | 扩展安装超时（默认 30 秒） |
-| `--extensions-dir <path>` | 离线 .vsix 目录（内网环境） |
-| `-v` | 显示详细诊断日志 |
+| 选项                      | 说明                                                          |
+| ------------------------- | ------------------------------------------------------------- |
+| `--editor <name>`         | 目标编辑器：`vscode` / `cursor` / `windsurf` / `kiro` / `all` |
+| `--mode <mode>`           | `override`（覆盖，默认）或 `merge`（合并）                    |
+| `--force`                 | 跳过备份和交互确认                                            |
+| `--dry-run`               | 预览模式，不做任何写入                                        |
+| `--source <name>`         | 配置源：`github` / `gitee`                                    |
+| `--timeout <sec>`         | 扩展安装超时（默认 30 秒）                                    |
+| `--extensions-dir <path>` | 离线 .vsix 目录（内网环境）                                   |
+| `-v`                      | 显示详细诊断日志                                              |
 
 ### upload — 上传本地配置到团队仓库
 
-| 选项 | 说明 |
-|------|------|
-| `--mode <mode>` | `override`（覆盖）或 `merge`（合并） |
-| `--source <name>` | `github` / `gitee` / `all`（默认） |
-| `--editor <name>` | 读取哪个编辑器的本地配置 |
-| `--repo <path>` | 指定本地已 clone 的配置仓库路径 |
+| 选项              | 说明                                 |
+| ----------------- | ------------------------------------ |
+| `--mode <mode>`   | `override`（覆盖）或 `merge`（合并） |
+| `--source <name>` | `github` / `gitee` / `all`（默认）   |
+| `--editor <name>` | 读取哪个编辑器的本地配置             |
+| `--repo <path>`   | 指定本地已 clone 的配置仓库路径      |
 
 ### download-extensions — 批量下载 .vsix（管理员用）
 
-| 选项 | 说明 |
-|------|------|
-| `--output <dir>` | 输出目录（默认 `vsix-cache`） |
-| `--force` | 强制重新下载所有扩展（覆盖已有文件） |
-| `--merge` | 只增不删 — 保留目录中不在列表里的 .vsix |
+| 选项             | 说明                                    |
+| ---------------- | --------------------------------------- |
+| `--output <dir>` | 输出目录（默认 `vsix-cache`）           |
+| `--force`        | 强制重新下载所有扩展（覆盖已有文件）    |
+| `--merge`        | 只增不删 — 保留目录中不在列表里的 .vsix |
 
 > 默认**覆盖模式**: 以 `extensions.list` 为准，自动删除目录中已废弃的 .vsix。
 
 ### status / restore / clean
 
-| 命令 | 说明 |
-|------|------|
-| `vscode-config status` | 检查编辑器版本、配置文件、已装扩展、备份 |
-| `vscode-config restore` | 恢复备份（多个可交互选择） |
-| `vscode-config restore --list` | 列出所有可用备份 |
-| `vscode-config restore --backup <path>` | 恢复指定路径的备份 |
-| `vscode-config clean` | 清理 30 天前的旧备份 |
-| `vscode-config clean --older-than <days>` | 指定清理天数 |
+| 命令                                      | 说明                                     |
+| ----------------------------------------- | ---------------------------------------- |
+| `vscode-config status`                    | 检查编辑器版本、配置文件、已装扩展、备份 |
+| `vscode-config restore`                   | 恢复备份（多个可交互选择）               |
+| `vscode-config restore --list`            | 列出所有可用备份                         |
+| `vscode-config restore --backup <path>`   | 恢复指定路径的备份                       |
+| `vscode-config clean`                     | 清理 30 天前的旧备份                     |
+| `vscode-config clean --older-than <days>` | 指定清理天数                             |
 
 > 以上命令均支持 `--editor <name>` 指定编辑器。
 
@@ -110,10 +110,10 @@ vscode-config restore                     # 一键恢复到安装前
 
 ## 安装模式
 
-| 模式 | 行为 | 场景 |
-|------|------|------|
-| **覆盖**（默认） | 完全替换 settings / keybindings，保证团队一致 | 新机器初始化、重置为团队标准 |
-| **合并** `--mode merge` | 深度合并，同名 key 覆盖，独有 key 保留 | 已有个人配置，只同步团队新增 |
+| 模式                    | 行为                                          | 场景                         |
+| ----------------------- | --------------------------------------------- | ---------------------------- |
+| **覆盖**（默认）        | 完全替换 settings / keybindings，保证团队一致 | 新机器初始化、重置为团队标准 |
+| **合并** `--mode merge` | 深度合并，同名 key 覆盖，独有 key 保留        | 已有个人配置，只同步团队新增 |
 
 两种模式都会**自动备份**当前配置，可随时 `restore` 回滚。
 
@@ -162,12 +162,12 @@ vscode-config clean --older-than 7 # 清理 7 天前的旧备份
 <details>
 <summary>备份存储位置</summary>
 
-| 编辑器 | Windows | macOS | Linux |
-|--------|---------|-------|-------|
-| VS Code | `%APPDATA%\Code\User\backup-*\` | `~/Library/Application Support/Code/User/backup-*/` | `~/.config/Code/User/backup-*/` |
-| Cursor | `%APPDATA%\Cursor\User\backup-*\` | `~/Library/Application Support/Cursor/User/backup-*/` | `~/.config/Cursor/User/backup-*/` |
+| 编辑器   | Windows                             | macOS                                                   | Linux                               |
+| -------- | ----------------------------------- | ------------------------------------------------------- | ----------------------------------- |
+| VS Code  | `%APPDATA%\Code\User\backup-*\`     | `~/Library/Application Support/Code/User/backup-*/`     | `~/.config/Code/User/backup-*/`     |
+| Cursor   | `%APPDATA%\Cursor\User\backup-*\`   | `~/Library/Application Support/Cursor/User/backup-*/`   | `~/.config/Cursor/User/backup-*/`   |
 | Windsurf | `%APPDATA%\Windsurf\User\backup-*\` | `~/Library/Application Support/Windsurf/User/backup-*/` | `~/.config/Windsurf/User/backup-*/` |
-| Kiro | `%APPDATA%\Kiro\User\backup-*\` | `~/Library/Application Support/Kiro/User/backup-*/` | `~/.config/Kiro/User/backup-*/` |
+| Kiro     | `%APPDATA%\Kiro\User\backup-*\`     | `~/Library/Application Support/Kiro/User/backup-*/`     | `~/.config/Kiro/User/backup-*/`     |
 
 </details>
 
@@ -180,6 +180,26 @@ vscode-config clean --older-than 7 # 清理 7 天前的旧备份
 ```bash
 vscode-config install --source gitee --timeout 120  # 强制国内源 + 慢网超时
 ```
+
+### 环境变量
+
+其他团队使用自建配置仓库时，通过环境变量覆盖默认地址，无需 fork 修改源码：
+
+| 环境变量                    | 默认值                                                             | 说明                              |
+| --------------------------- | ------------------------------------------------------------------ | --------------------------------- |
+| `VSCODE_CONFIG_GITHUB_URL`  | `https://raw.githubusercontent.com/ChenyCHENYU/vscode-config/main` | GitHub 配置源 raw 地址            |
+| `VSCODE_CONFIG_GITEE_URL`   | `https://gitee.com/ycyplus163/vscode-config/raw/main`              | Gitee 配置源 raw 地址             |
+| `VSCODE_CONFIG_REPO_GITHUB` | `git@github.com:ChenyCHENYU/vscode-config.git`                     | upload 命令使用的 GitHub 仓库地址 |
+| `VSCODE_CONFIG_REPO_GITEE`  | `git@gitee.com:ycyplus163/vscode-config.git`                       | upload 命令使用的 Gitee 仓库地址  |
+
+```bash
+# 示例：指向自建仓库
+export VSCODE_CONFIG_GITHUB_URL=https://raw.githubusercontent.com/your-org/editor-config/main
+export VSCODE_CONFIG_REPO_GITHUB=git@github.com:your-org/editor-config.git
+vscode-config install
+```
+
+> 所有环境变量均为可选，不设置时使用默认地址。
 
 ---
 
@@ -235,11 +255,11 @@ vscode-config install
 
 ### 三种场景
 
-| 场景 | npm | marketplace | 方案 |
-|------|:---:|:-----------:|------|
-| **外网本地** | ✅ | ✅ | 直接 `vscode-config install` |
-| **内网本地** | ✅ | ❌ | 在有网时先执行一次 install，扩展本地持久保留 |
-| **云桌面内网** | ✅ | ❌ | 安装伴侣包，主工具自动检测 |
+| 场景           | npm | marketplace | 方案                                         |
+| -------------- | :-: | :---------: | -------------------------------------------- |
+| **外网本地**   | ✅  |     ✅      | 直接 `vscode-config install`                 |
+| **内网本地**   | ✅  |     ❌      | 在有网时先执行一次 install，扩展本地持久保留 |
+| **云桌面内网** | ✅  |     ❌      | 安装伴侣包，主工具自动检测                   |
 
 ### 云桌面一键安装（推荐）
 
@@ -278,24 +298,24 @@ vscode-config download-extensions --output ./vsix-cache --force   # 全量重下
 
 ## 故障排除
 
-| 症状 | 解决方案 |
-|------|----------|
-| `XXX 未检测到` | 安装对应编辑器并确保 CLI 命令在 PATH 中 |
-| 扩展安装超时 | `--timeout 120` 或 `--source gitee` |
+| 症状           | 解决方案                                       |
+| -------------- | ---------------------------------------------- |
+| `XXX 未检测到` | 安装对应编辑器并确保 CLI 命令在 PATH 中        |
+| 扩展安装超时   | `--timeout 120` 或 `--source gitee`            |
 | 所有扩展均失败 | 可能处于内网，参考「内网 / 离线 / 云桌面」章节 |
-| 部分扩展失败 | 工具会输出手动安装命令，复制执行即可 |
-| 需要回滚 | `vscode-config restore` |
-| 想看详细日志 | `vscode-config install --force -v` |
+| 部分扩展失败   | 工具会输出手动安装命令，复制执行即可           |
+| 需要回滚       | `vscode-config restore`                        |
+| 想看详细日志   | `vscode-config install --force -v`             |
 
 ---
 
 ## 系统要求
 
-| 依赖 | 版本 |
-|------|------|
-| Node.js | >= 16.7 |
-| Git | 已安装 |
-| 编辑器 | VS Code / Cursor / Windsurf / Kiro 至少一个 |
+| 依赖    | 版本                                        |
+| ------- | ------------------------------------------- |
+| Node.js | >= 16.7                                     |
+| Git     | 已安装                                      |
+| 编辑器  | VS Code / Cursor / Windsurf / Kiro 至少一个 |
 
 ```bash
 vscode-config status  # 一键检查环境
