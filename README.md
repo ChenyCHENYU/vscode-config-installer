@@ -212,23 +212,33 @@ vscode-config install --source gitee --timeout 120
 
 ---
 
-## 内网 / 离线环境
+## 内网 / 离线 / 云桌面
 
 配置文件内置离线兜底（`defaults/`），远程不可用时自动读取包内配置。
 
-扩展安装依赖编辑器 marketplace，内网环境请参考：
+扩展安装依赖编辑器 marketplace，不可用时按以下方案处理：
 
-| 方案 | 操作 |
+| 场景 | 方案 |
 |------|------|
-| **推荐** | 在有网环境下执行一次 `vscode-config install`，扩展本地持久保留 |
-| 离线 .vsix | 管理员: `vscode-config download-extensions --output <目录>` → 拷贝到内网 → 用户: `vscode-config install --extensions-dir <目录>` |
-| 环境变量 | 设置 `VSCODE_CONFIG_EXTENSIONS_DIR=<.vsix 目录>`，install 自动读取 |
+| **偶尔有网** | 在有网时执行一次 `vscode-config install`，扩展本地持久保留 |
+| **云桌面（可访问 npm）** | `npm i -g @agile-team/vscode-config-extensions`，主工具**自动检测** |
+| **手动指定 .vsix** | `vscode-config install --extensions-dir <目录>` |
+| **环境变量** | 设置 `VSCODE_CONFIG_EXTENSIONS_DIR=<目录>` |
+
+### 云桌面一键安装（推荐）
 
 ```bash
-# 管理员：下载 .vsix（有网机器）
+npm i -g @agile-team/vscode-config @agile-team/vscode-config-extensions
+vscode-config install   # 自动检测离线扩展包，无需额外参数
+```
+
+### 管理员维护 .vsix
+
+```bash
+# 下载 .vsix（有网机器）
 vscode-config download-extensions --output ./vsix-cache
 
-# 管理员：更新 .vsix（全量最新）
+# 全量更新最新版
 vscode-config download-extensions --output ./vsix-cache --force
 ```
 

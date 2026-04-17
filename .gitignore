@@ -64,8 +64,9 @@ Thumbs.db
 tmp/
 temp/
 
-# VSIX cache (download-extensions output)
+# VSIX files (download-extensions output)
 vsix-cache/
+packages/vscode-config-extensions/extensions/
 
 # npm auth token
 .npmrc

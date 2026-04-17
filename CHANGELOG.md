@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.10.0] - 2025-04-17
+
+### feat
+- **installer**: 自动检测伴侣包 `@agile-team/vscode-config-extensions`，云桌面/内网通过 `npm install` 获取 .vsix，主工具自动发现并安装
+- **packages**: 新增 `@agile-team/vscode-config-extensions` 离线扩展伴侣包
+
+### docs
+- **README**: 新增云桌面场景文档，三种环境（外网/内网/云桌面）完整覆盖
+
 ## [3.9.1] - 2025-04-17
 
 ### refactor
