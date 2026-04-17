@@ -3,10 +3,11 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
-## [3.13.0] - 2025-04-18
+## [3.14.0] - 2025-04-18
 
 ### feat
 
+- **status**: 新增「配置来源」区块 — 显示项目配置/用户配置路径、生效的配置源和仓库地址
 - **config**: 新增 `.vscode-configrc.json` 配置文件支持 — 其他团队无需 fork 即可自定义配置源、仓库地址和编辑器
 - **config**: 配置文件查找顺序 — 项目目录 > 用户 home > 内置默认值
 - **config**: 优先级链 — 环境变量 > 项目配置文件 > home 配置文件 > 内置默认值
@@ -14,6 +15,11 @@ The format is based on [Conventional Commits](https://www.conventionalcommits.or
 - **installer**: 配置源改用 `resolveSources()` 统一解析
 - **uploader**: 仓库地址改用 `resolveRepos()` 统一解析
 - **sync-defaults**: 同步脚本改用 `resolveSources()` 统一解析
+
+### docs
+
+- **README**: 多编辑器支持章节更新 — 自定义编辑器说明
+- **README**: `--editor` 选项更新 — 支持自定义编辑器名称
 
 ### test
 

@@ -63,16 +63,16 @@ vscode-config restore                     # 一键恢复到安装前
 
 ### install — 安装/同步配置
 
-| 选项                      | 说明                                                          |
-| ------------------------- | ------------------------------------------------------------- |
-| `--editor <name>`         | 目标编辑器：`vscode` / `cursor` / `windsurf` / `kiro` / `all` |
-| `--mode <mode>`           | `override`（覆盖，默认）或 `merge`（合并）                    |
-| `--force`                 | 跳过备份和交互确认                                            |
-| `--dry-run`               | 预览模式，不做任何写入                                        |
-| `--source <name>`         | 配置源：`github` / `gitee`                                    |
-| `--timeout <sec>`         | 扩展安装超时（默认 30 秒）                                    |
-| `--extensions-dir <path>` | 离线 .vsix 目录（内网环境）                                   |
-| `-v`                      | 显示详细诊断日志                                              |
+| 选项                      | 说明                                                                   |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `--editor <name>`         | 目标编辑器：`vscode` / `cursor` / `windsurf` / `kiro` / `all` / 自定义 |
+| `--mode <mode>`           | `override`（覆盖，默认）或 `merge`（合并）                             |
+| `--force`                 | 跳过备份和交互确认                                                     |
+| `--dry-run`               | 预览模式，不做任何写入                                                 |
+| `--source <name>`         | 配置源：`github` / `gitee`                                             |
+| `--timeout <sec>`         | 扩展安装超时（默认 30 秒）                                             |
+| `--extensions-dir <path>` | 离线 .vsix 目录（内网环境）                                            |
+| `-v`                      | 显示详细诊断日志                                                       |
 
 ### upload — 上传本地配置到团队仓库
 
@@ -121,11 +121,12 @@ vscode-config restore                     # 一键恢复到安装前
 
 ## 多编辑器支持
 
-支持 **VS Code**、**Cursor**、**Windsurf**、**Kiro** 四种 Electron 系编辑器。
+内置 **VS Code**、**Cursor**、**Windsurf**、**Kiro** 四种编辑器，支持通过配置文件自定义更多编辑器（如 Trae、Zed 等）。
 
 - 不带 `--editor` 参数时**交互式选择**，自动检测已安装的编辑器
 - `--editor all` 同时安装到所有已检测编辑器
 - 未检测到的编辑器会置灰不可选
+- 自定义编辑器在 `.vscode-configrc.json` 的 `editors` 字段中注册
 
 > **为什么不用编辑器自带的「导入配置」？**
 > 因为那是一次性操作。本工具支持**持续同步** — 团队配置更新后再跑一次 `install` 即可。
