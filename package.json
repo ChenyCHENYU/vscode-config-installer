@@ -1,7 +1,7 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "3.3.1",
-  "description": "One-command VSCode configuration installer for team standard setup",
+  "version": "3.5.0",
+  "description": "One-command editor configuration installer (VS Code / Cursor / Windsurf / Kiro) for team standard setup",
   "main": "lib/installer.js",
   "bin": {
     "vscode-config": "./bin/cli.js"
@@ -13,6 +13,9 @@
   ],
   "keywords": [
     "vscode",
+    "cursor",
+    "windsurf",
+    "kiro",
     "configuration",
     "setup",
     "development",
