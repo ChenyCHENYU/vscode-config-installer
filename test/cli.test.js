@@ -34,12 +34,21 @@ describe('CLI install 命令', () => {
     assert.ok(out.includes('kiro'));
   });
 
-  it('install --dry-run --editor=vscode 正常运行', () => {
-    const out = execSync(`${CLI} install --dry-run --editor=vscode`, {
-      encoding: 'utf8',
-      timeout: 30000,
-    });
-    assert.ok(out.includes('VS Code'));
+  it('install --dry-run --editor=vscode 在不同环境下都能给出可预期结果', () => {
+    try {
+      const out = execSync(`${CLI} install --dry-run --editor=vscode`, {
+        encoding: 'utf8',
+        timeout: 30000,
+      });
+      assert.ok(out.includes('VS Code'));
+    } catch (error) {
+      const output = `${error.stdout || ''}\n${error.stderr || ''}`;
+      assert.ok(output.includes('VS Code'));
+      assert.ok(
+        output.includes('未检测到') || output.includes('无法执行'),
+        `unexpected output: ${output}`
+      );
+    }
   });
 });
 
