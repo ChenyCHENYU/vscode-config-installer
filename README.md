@@ -71,6 +71,7 @@ vscode-config restore                     # 一键恢复到安装前
 | `--dry-run` | 预览模式，不做任何写入 |
 | `--source <name>` | 配置源：`github` / `gitee` |
 | `--timeout <sec>` | 扩展安装超时（默认 30 秒） |
+| `--extensions-dir <path>` | 离线 .vsix 目录（内网环境） |
 | `-v` | 显示详细诊断日志 |
 
 ### upload — 上传本地配置到团队仓库
@@ -81,6 +82,13 @@ vscode-config restore                     # 一键恢复到安装前
 | `--source <name>` | `github` / `gitee` / `all`（默认） |
 | `--editor <name>` | 读取哪个编辑器的本地配置 |
 | `--repo <path>` | 指定本地已 clone 的配置仓库路径 |
+
+### download-extensions — 批量下载 .vsix（管理员用）
+
+| 选项 | 说明 |
+|------|------|
+| `--output <dir>` | 输出目录（默认 `vsix-cache`） |
+| `--force` | 强制重新下载所有扩展（覆盖已有文件） |
 
 ### status / restore / clean
 
@@ -204,12 +212,35 @@ vscode-config install --source gitee --timeout 120
 
 ---
 
+## 内网 / 离线环境
+
+配置文件内置离线兜底（`defaults/`），远程不可用时自动读取包内配置。
+
+扩展安装依赖编辑器 marketplace，内网环境请参考：
+
+| 方案 | 操作 |
+|------|------|
+| **推荐** | 在有网环境下执行一次 `vscode-config install`，扩展本地持久保留 |
+| 离线 .vsix | 管理员: `vscode-config download-extensions --output <目录>` → 拷贝到内网 → 用户: `vscode-config install --extensions-dir <目录>` |
+| 环境变量 | 设置 `VSCODE_CONFIG_EXTENSIONS_DIR=<.vsix 目录>`，install 自动读取 |
+
+```bash
+# 管理员：下载 .vsix（有网机器）
+vscode-config download-extensions --output ./vsix-cache
+
+# 管理员：更新 .vsix（全量最新）
+vscode-config download-extensions --output ./vsix-cache --force
+```
+
+---
+
 ## 故障排除
 
 | 症状 | 解决方案 |
 |------|----------|
 | `XXX 未检测到` | 安装对应编辑器并确保 CLI 命令在 PATH 中 |
 | 扩展安装超时 | `--timeout 120` 或 `--source gitee` |
+| 所有扩展均失败 | 可能处于内网，参考「内网 / 离线环境」章节 |
 | 部分扩展失败 | 工具会输出手动安装命令，复制执行即可 |
 | 需要回滚 | `vscode-config restore` |
 | 想看详细日志 | `vscode-config install --force -v` |

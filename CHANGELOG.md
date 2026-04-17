@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.9.1] - 2025-04-17
+
+### refactor
+- **installer**: 移除扩展安装的交互式降级提示，改为清晰的操作指引（有网先装一次 / 离线 .vsix 目录）
+- **installer**: 精简 `installExtensions` 逻辑，移除 `_resolveOfflineDir`
+
+### docs
+- **README**: 新增「内网 / 离线环境」章节，补充 `download-extensions` 命令和 `--extensions-dir` 文档
+
 ## [3.9.0] - 2025-04-17
 
 ### feat
