@@ -63,3 +63,9 @@ Thumbs.db
 # Temporary folders
 tmp/
 temp/
+
+# VSIX cache (download-extensions output)
+vsix-cache/
+
+# npm auth token
+.npmrc

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.8.0] - 2025-04-17
+
+### feat
+- **installer**: 新增 `--extensions-dir <path>` 离线扩展安装 — 从本地 .vsix 目录安装扩展，支持内网零外网环境
+- **scripts**: 新增 `download-extensions.js` 批量下载 marketplace .vsix 文件，支持断点续传（已存在跳过）
+- **scripts**: 新增 `npm run download-extensions` 脚本命令
+
 ## [3.7.0] - 2025-04-17
 
 ### feat

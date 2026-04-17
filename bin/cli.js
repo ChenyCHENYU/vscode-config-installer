@@ -113,32 +113,36 @@ program
 
 // install 命令
 program
-  .command("install")
-  .description("安装最新的编辑器配置（支持覆盖模式和扩展模式）")
-  .option("--force", "强制安装，跳过备份确认")
-  .option("--timeout <seconds>", "扩展安装超时时间（秒）", "30")
-  .option("--source <name>", "指定配置源 (github|gitee)", "")
-  .option("--dry-run", "预览模式，不实际安装")
-  .option("--mode <mode>", "安装模式 (override|merge)", "override")
+  .command('install')
+  .description('安装最新的编辑器配置（支持覆盖模式和扩展模式）')
+  .option('--force', '强制安装，跳过备份确认')
+  .option('--timeout <seconds>', '扩展安装超时时间（秒）', '30')
+  .option('--source <name>', '指定配置源 (github|gitee)', '')
+  .option('--dry-run', '预览模式，不实际安装')
+  .option('--mode <mode>', '安装模式 (override|merge)', 'override')
   .option(
-    "--editor <name>",
-    "目标编辑器 (vscode|cursor|windsurf|kiro|all)",
-    "vscode",
+    '--editor <name>',
+    '目标编辑器 (vscode|cursor|windsurf|kiro|all)',
+    'vscode'
   )
-  .action(async (options) => {
+  .option(
+    '--extensions-dir <path>',
+    '离线扩展目录（包含 .vsix 文件），用于内网环境'
+  )
+  .action(async options => {
     try {
       ui.banner(packageJson.version);
 
       if (options.dryRun) {
         console.log(
-          chalk.yellow(`  ${ui.icons.search} 预览模式 — 不会实际安装`),
+          chalk.yellow(`  ${ui.icons.search} 预览模式 — 不会实际安装`)
         );
-        console.log("");
+        console.log('');
       }
 
       // 选择目标编辑器（未指定 --editor 时交互选择）
       const hasEditorArg = process.argv.some(
-        (a) => a === "--editor" || a.startsWith("--editor="),
+        a => a === '--editor' || a.startsWith('--editor=')
       );
       if (!hasEditorArg) {
         const selectedEditor = await selectEditor();
@@ -150,12 +154,12 @@ program
       if (
         !options.dryRun &&
         !options.force &&
-        (!options.mode || options.mode === "override")
+        (!options.mode || options.mode === 'override')
       ) {
-        if (!process.argv.includes("--mode")) {
+        if (!process.argv.includes('--mode')) {
           options.mode = await selectInstallMode();
           console.log(
-            `  ${ui.symbols.success} ${chalk.green(`已选择: ${options.mode === "override" ? "覆盖模式" : "合并模式"}`)}`,
+            `  ${ui.symbols.success} ${chalk.green(`已选择: ${options.mode === 'override' ? '覆盖模式' : '合并模式'}`)}`
           );
         }
       }
@@ -164,59 +168,59 @@ program
 
       if (options.dryRun) return;
 
-      const editorOpt = options.editor || "vscode";
+      const editorOpt = options.editor || 'vscode';
       const editorName =
-        editorOpt === "all"
-          ? "编辑器"
-          : EDITOR_REGISTRY[editorOpt]?.label || "VS Code";
+        editorOpt === 'all'
+          ? '编辑器'
+          : EDITOR_REGISTRY[editorOpt]?.label || 'VS Code';
       const isEditorTerminal =
-        process.env.TERM_PROGRAM === "vscode" ||
-        process.env.TERM_PROGRAM === "cursor" ||
-        process.env.TERM_PROGRAM === "windsurf" ||
-        process.env.TERM_PROGRAM === "kiro";
+        process.env.TERM_PROGRAM === 'vscode' ||
+        process.env.TERM_PROGRAM === 'cursor' ||
+        process.env.TERM_PROGRAM === 'windsurf' ||
+        process.env.TERM_PROGRAM === 'kiro';
 
-      console.log("");
-      ui.infoBox("下一步", [
+      console.log('');
+      ui.infoBox('下一步', [
         isEditorTerminal
           ? chalk.white('按 Ctrl+Shift+P → "Reload Window" 重新加载')
           : chalk.white(`重启 ${editorName} 以应用所有更改`),
-        chalk.gray("运行 vscode-config status 查看状态"),
-        chalk.gray("出问题? → vscode-config restore 恢复备份"),
+        chalk.gray('运行 vscode-config status 查看状态'),
+        chalk.gray('出问题? → vscode-config restore 恢复备份'),
       ]);
     } catch (error) {
-      console.error("");
+      console.error('');
       const lines = [chalk.red(error.message)];
-      if (error.message.includes("不可用") || error.message.includes("超时")) {
+      if (error.message.includes('不可用') || error.message.includes('超时')) {
         lines.push(
-          "",
-          chalk.yellow("网络问题:"),
-          chalk.gray("  --source gitee  使用国内源"),
-          chalk.gray("  --timeout 60    增加超时"),
+          '',
+          chalk.yellow('网络问题:'),
+          chalk.gray('  --source gitee  使用国内源'),
+          chalk.gray('  --timeout 60    增加超时')
         );
       } else if (
-        Object.values(EDITOR_REGISTRY).some((e) =>
-          error.message.includes(e.label),
+        Object.values(EDITOR_REGISTRY).some(e =>
+          error.message.includes(e.label)
         )
       ) {
         const editorHints = Object.entries(EDITOR_REGISTRY)
           .map(([key, v]) =>
-            chalk.gray(`  --editor ${key.padEnd(8)} 安装到 ${v.label}`),
+            chalk.gray(`  --editor ${key.padEnd(8)} 安装到 ${v.label}`)
           )
-          .join("\n");
+          .join('\n');
         lines.push(
-          "",
-          chalk.yellow("编辑器问题:"),
-          chalk.gray("  确认已安装且命令在 PATH 中"),
-          editorHints,
+          '',
+          chalk.yellow('编辑器问题:'),
+          chalk.gray('  确认已安装且命令在 PATH 中'),
+          editorHints
         );
-      } else if (error.message.includes("Git")) {
+      } else if (error.message.includes('Git')) {
         lines.push(
-          "",
-          chalk.yellow("Git 问题:"),
-          chalk.gray("  确认 Git 已安装且在 PATH 中"),
+          '',
+          chalk.yellow('Git 问题:'),
+          chalk.gray('  确认 Git 已安装且在 PATH 中')
         );
       }
-      ui.errorBox("安装失败", lines);
+      ui.errorBox('安装失败', lines);
       process.exit(1);
     }
   });
