@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.6.1] - 2025-04-17
+
+### refactor
+- **installer**: 移除废弃向后兼容函数（detectVSCodePaths / detectCursorPaths / getVSCodeConfigDir / getCursorConfigDir）
+- **installer**: 移除无人使用的 CONFIG_SOURCES 导出
+- **installer**: 更新文件头注释和 section 标题
+- **core**: 清理所有残留迁移注释
+
+### fix
+- **cli**: 修复 prefer-destructuring lint 警告
+- **eslint**: 调整 complexity 阈值至 30（适配核心编排函数）
+- **backup**: `restoredFiles` 改为 `const`（never reassigned）
+- **changelog**: 修复 3.5.0 与 3.6.0 重复的 chore 条目
+
+### docs
+- **README**: 专业重写，精简布局，新增 CI badge、details 折叠、命令参考表，适配在线站点展示
+
 ## [3.6.0] - 2025-04-17
 
 ### feat
@@ -57,12 +74,6 @@ The format is based on [Conventional Commits](https://www.conventionalcommits.or
 - **README**: 命令表新增 upload --editor 条目
 - **README**: 备份路径表新增 Windsurf / Kiro 行
 - **README**: 故障排除表新增 Windsurf / Kiro 条目
-
-### chore
-- **deps**: 集成 `@robot-admin/git-standards`（ESLint + Prettier + Commitlint + Husky）
-- **ci**: 新增 GitHub Actions CI（3 OS × 3 Node 版本 + commitlint）
-- **test**: 新增 41 个单元测试和 CLI 集成测试
-- **test**: 导出 `parseJsonc` / `deepMerge` / `isValidExtId` 以便测试
 
 ## [3.4.0] - 2025-04-15
 

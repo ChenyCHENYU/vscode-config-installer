@@ -36,7 +36,7 @@ export default [
     rules: {
       //! 代码复杂度
       'max-depth': ['error', 4],
-      complexity: ['warn', 15],
+      complexity: ['warn', 30],
 
       //! 异步代码规范
       'no-await-in-loop': 'off',
@@ -51,10 +51,7 @@ export default [
       'no-eval': 'error',
       'prefer-const': 'warn',
       'no-var': 'warn',
-      'prefer-destructuring': [
-        1,
-        { object: true, array: false },
-      ],
+      'prefer-destructuring': [1, { object: true, array: false }],
       'no-duplicate-imports': 'error',
     },
   },

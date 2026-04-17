@@ -36,50 +36,71 @@ async function selectEditor() {
   for (const key of editorKeys) {
     detection[key] = !!detectEditorPaths(key);
   }
-  const installedKeys = editorKeys.filter((k) => detection[k]);
+  const installedKeys = editorKeys.filter(k => detection[k]);
 
-  // 只检测到一个编辑器时自动选择
-  if (installedKeys.length === 1) {
-    const key = installedKeys[0];
-    const label = EDITOR_REGISTRY[key].label;
-    console.log(
-      `  ${ui.symbols.success} ${chalk.green(`检测到 ${label}，自动选择`)}`,
-    );
-    return key;
-  }
-
-  // 多个或未检测到 — 交互选择
+  // 构建选项列表 — 始终显示所有编辑器
   const choices = [];
   for (const key of editorKeys) {
     const reg = EDITOR_REGISTRY[key];
     const installed = detection[key];
-    choices.push({
-      title: `${chalk.cyan(reg.label.padEnd(10))} 安装到 ${reg.label}${installed ? "" : " " + chalk.yellow("(未检测到)")}`,
-      value: key,
-      disabled: !installed,
-    });
+    if (installed) {
+      choices.push({
+        title: `${chalk.cyan(reg.label.padEnd(10))} ${chalk.green('✔ 已安装')}`,
+        value: key,
+      });
+    } else {
+      choices.push({
+        title: `${chalk.gray(reg.label.padEnd(10))} ${chalk.yellow('未检测到')} ${chalk.gray('— 安装后重新运行即可: ' + reg.website)}`,
+        value: key,
+        disabled: true,
+      });
+    }
   }
   // "全部" 选项：至少检测到 2 个时可用
   if (installedKeys.length >= 2) {
     choices.push({
-      title: `${chalk.green("全部".padEnd(10))} 同时安装到所有已检测的编辑器`,
-      value: "all",
+      title: `${chalk.green('全部'.padEnd(10))} 同时安装到 ${installedKeys.length} 个已检测的编辑器`,
+      value: 'all',
     });
   }
 
-  console.log("");
+  // 检测结果摘要
+  console.log('');
+  console.log(chalk.blue(`  ${ui.icons.search} 编辑器检测结果:`));
+  for (const key of editorKeys) {
+    const reg = EDITOR_REGISTRY[key];
+    if (detection[key]) {
+      console.log(`    ${ui.symbols.success} ${chalk.green(reg.label)}`);
+    } else {
+      console.log(
+        `    ${chalk.gray('○')} ${chalk.gray(reg.label)} ${chalk.gray('— ' + reg.website)}`
+      );
+    }
+  }
+  console.log('');
+
+  if (installedKeys.length === 0) {
+    ui.warnBox('未检测到任何编辑器', [
+      '请安装以下任一编辑器后重试:',
+      ...editorKeys.map(
+        k => `  ${EDITOR_REGISTRY[k].label}: ${EDITOR_REGISTRY[k].website}`
+      ),
+    ]);
+    process.exit(1);
+  }
+
   const response = await prompts({
-    type: "select",
-    name: "editor",
-    message: "选择目标编辑器",
+    type: 'select',
+    name: 'editor',
+    message: '选择目标编辑器',
     choices,
     initial: Math.max(
       0,
-      choices.findIndex((c) => !c.disabled),
+      choices.findIndex(c => !c.disabled)
     ),
   });
   if (response.editor === undefined) {
-    console.log(chalk.yellow("\n  已取消"));
+    console.log(chalk.yellow('\n  已取消'));
     process.exit(0);
   }
   return response.editor;
