@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.14.2] - 2025-04-18
+
+### fix
+
+- **ui**: 移除 `gradient-string` 依赖，修复 Node 18 下的 ESM/CommonJS 兼容问题
+- **test**: `install --dry-run` 测试不再依赖 CI 机器预装 VS Code
+- **test**: 新增跨平台 `test/run-tests.js`，修复 Windows 下 `npm test` 的 glob 展开问题
+
+### chore
+
+- **workflow**: GitHub Actions 精简为 Windows / macOS + Node 20，降低安装器项目的 CI 维护成本
+
 ## [3.14.1] - 2025-04-18
 
 ### fix
