@@ -21,14 +21,32 @@ vscode-config install
 - 云桌面环境（可访问 npm，不可访问 VS Code marketplace）
 - 企业内网环境（通过内部 npm 镜像分发）
 
-## 更新
+## 自动同步机制
 
-管理员在有网环境下重新生成 .vsix 并发布新版本：
+本包的 `.vsix` 文件**自动从远程配置仓库同步**，无需手动维护：
+
+```
+远程 extensions.list (GitHub / Gitee)  ← 唯一数据源
+        │
+        ▼  npm publish 时自动拉取
+  build.js (prepublishOnly)
+        │
+        ▼  下载 .vsix + 排除 AI 扩展 + 清理废弃
+  extensions/  ← 始终与远程 list 同步
+```
+
+管理员发布新版只需一条命令：
 
 ```bash
-vscode-config download-extensions --output packages/vscode-config-extensions/extensions
 cd packages/vscode-config-extensions
-npm publish --access public
+npm version patch && npm publish --access public
+# prepublishOnly 自动: 拉远程 list → 下载 .vsix → 清理废弃
+```
+
+全量重建：
+
+```bash
+npm run build    # --force 强制重新下载所有 .vsix
 ```
 
 ## 相关链接

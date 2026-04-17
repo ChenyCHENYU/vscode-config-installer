@@ -1,7 +1,11 @@
 {
   "name": "@agile-team/vscode-config-extensions",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "离线扩展包 — 配合 @agile-team/vscode-config 在云桌面/内网环境下安装 VS Code 扩展（不含 AI 类扩展）",
+  "scripts": {
+    "build": "node build.js --force",
+    "prepublishOnly": "node build.js"
+  },
   "files": [
     "extensions/",
     "README.md"

@@ -255,17 +255,23 @@ vscode-config install
 
 ### 管理员维护
 
+伴侣包发布时**自动拉取远程最新 `extensions.list`**，单一数据源，零手动维护：
+
 ```bash
-# 下载 .vsix（有网机器）
-vscode-config download-extensions --output ./vsix-cache
+# 更新远程扩展列表（管理员本地 → 云端）
+vscode-config upload
 
-# 全量更新最新版
-vscode-config download-extensions --output ./vsix-cache --force
-
-# 更新伴侣包（拷贝到伴侣包目录后重新发布）
-vscode-config download-extensions --output packages/vscode-config-extensions/extensions --force
+# 发布伴侣包（自动同步远程 list → 下载 .vsix → 清理废弃）
 cd packages/vscode-config-extensions
-npm publish --access public
+npm version patch && npm publish --access public
+```
+
+独立下载 .vsix（不依赖伴侣包）：
+
+```bash
+vscode-config download-extensions --output ./vsix-cache           # 覆盖模式（默认）
+vscode-config download-extensions --output ./vsix-cache --merge   # 只增不删
+vscode-config download-extensions --output ./vsix-cache --force   # 全量重下
 ```
 
 ---

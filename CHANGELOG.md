@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.11.1] - 2025-04-17
+
+### feat
+- **companion**: 伴侣包新增 `build.js` 自动构建 — `npm publish` 时自动拉取远程最新 `extensions.list`，下载 .vsix、排除 AI 扩展、清理废弃文件
+- **companion**: 单一数据源架构 — 远程配置仓库为唯一真实来源，零手动维护
+
+### docs
+- **README**: 管理员维护流程简化为单条命令，补充自动同步机制说明
+
 ## [3.11.0] - 2025-04-17
 
 ### feat
