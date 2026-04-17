@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.7.0] - 2025-04-17
+
+### feat
+- **installer**: 新增本地离线兜底机制 — 远程配置源全部不可用时自动读取包内 `defaults/` 配置
+- **scripts**: 新增 `sync-defaults.js` 同步脚本，自动从远程拉取最新配置到 `defaults/`
+- **scripts**: `prepublishOnly` 自动调用同步脚本，npm 发版即捆绑最新配置
+- **cli**: 修复单编辑器时跳过编辑器选择交互 — 始终显示编辑器菜单，未安装项置灰并显示下载链接
+
 ## [3.6.1] - 2025-04-17
 
 ### refactor
@@ -12,6 +20,9 @@ The format is based on [Conventional Commits](https://www.conventionalcommits.or
 - **core**: 清理所有残留迁移注释
 
 ### fix
+- **cli**: 修复单编辑器时跳过编辑器选择交互的问题 — 现在始终显示编辑器选择菜单
+- **cli**: 未安装的编辑器置灰并显示官网下载链接
+- **cli**: 新增编辑器检测结果摘要，零检测时给出安装引导
 - **cli**: 修复 prefer-destructuring lint 警告
 - **eslint**: 调整 complexity 阈值至 30（适配核心编排函数）
 - **backup**: `restoredFiles` 改为 `const`（never reassigned）

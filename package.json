@@ -1,6 +1,6 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "3.6.1",
+  "version": "3.7.0",
   "description": "One-command editor configuration installer (VS Code / Cursor / Windsurf / Kiro) for team standard setup",
   "main": "lib/installer.js",
   "bin": {
@@ -9,6 +9,7 @@
   "files": [
     "bin/",
     "lib/",
+    "defaults/",
     "README.md",
     "CHANGELOG.md"
   ],
@@ -51,7 +52,8 @@
   "scripts": {
     "start": "node bin/cli.js",
     "test": "node --test test/*.test.js",
-    "prepublishOnly": "echo \"Publishing @agile-team/vscode-config...\"",
+    "sync-defaults": "node scripts/sync-defaults.js",
+    "prepublishOnly": "node scripts/sync-defaults.js",
     "prepare": "husky",
     "cz": "git-cz",
     "lint": "eslint lib/ bin/ --fix",
