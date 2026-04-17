@@ -4,8 +4,9 @@
  * 批量下载 extensions.list 中所有扩展的 .vsix 文件
  *
  * 用法:
- *   node scripts/download-extensions.js [--output <dir>]
+ *   node scripts/download-extensions.js [--output <dir>] [--force]
  *
+ * --force  强制重新下载所有扩展（覆盖已有文件）
  * 默认输出到项目根目录的 vsix-cache/
  * .vsix 文件命名: publisher.name-latest.vsix
  */
@@ -17,10 +18,11 @@ const path = require('path');
 const DEFAULT_OUTPUT = path.join(__dirname, '..', 'vsix-cache');
 const EXT_LIST = path.join(__dirname, '..', 'defaults', 'extensions.list');
 
-// 解析命令行 --output
+// 解析命令行参数
 const args = process.argv.slice(2);
 const outIdx = args.indexOf('--output');
 const OUTPUT_DIR = outIdx >= 0 && args[outIdx + 1] ? path.resolve(args[outIdx + 1]) : DEFAULT_OUTPUT;
+const FORCE = args.includes('--force');
 
 /**
  * 从 VS Code Marketplace 下载 .vsix
@@ -63,7 +65,9 @@ function _download(url, destPath, timeout, redirects) {
 }
 
 async function main() {
-  console.log(`[download-extensions] 输出目录: ${OUTPUT_DIR}\n`);
+  console.log(
+    `[download-extensions] 输出目录: ${OUTPUT_DIR}${FORCE ? ' (强制更新)' : ''}\n`
+  );
 
   if (!fs.existsSync(EXT_LIST)) {
     console.error(`[error] 找不到 ${EXT_LIST}，请先运行 npm run sync-defaults`);
@@ -92,8 +96,12 @@ async function main() {
     const destPath = path.join(OUTPUT_DIR, fileName);
     const tag = `[${i + 1}/${extensions.length}]`;
 
-    // 已存在则跳过
-    if (fs.existsSync(destPath) && fs.statSync(destPath).size > 1000) {
+    // 已存在则跳过（--force 时强制重新下载）
+    if (
+      !FORCE &&
+      fs.existsSync(destPath) &&
+      fs.statSync(destPath).size > 1000
+    ) {
       const sizeKB = (fs.statSync(destPath).size / 1024).toFixed(0);
       console.log(`  ${tag} ${ext} — 已存在 (${sizeKB} KB), 跳过`);
       success++;

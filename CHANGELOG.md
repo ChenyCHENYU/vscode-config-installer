@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.9.0] - 2025-04-17
+
+### feat
+- **installer**: 扩展安装自动降级 — 在线全部失败时按优先级尝试: `--extensions-dir` > `VSCODE_CONFIG_EXTENSIONS_DIR` 环境变量 > 交互提示输入路径
+- **cli**: 新增 `download-extensions` 子命令，支持 `--output` 和 `--force` 参数
+
+### refactor
+- **installer**: 拆分 `installExtensions` 为 `_runExtInstall` / `_resolveOfflineDir` / `_verifyAndSummarize`，降低圈复杂度
+
 ## [3.8.0] - 2025-04-17
 
 ### feat
