@@ -50,7 +50,7 @@
   },
   "scripts": {
     "start": "node bin/cli.js",
-    "test": "node --test test/*.test.js",
+    "test": "node test/run-tests.js",
     "sync-defaults": "node scripts/sync-defaults.js",
     "download-extensions": "node scripts/download-extensions.js",
     "prepublishOnly": "node scripts/sync-defaults.js",
