@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.13.0] - 2025-04-18
+
+### feat
+
+- **config**: 新增 `.vscode-configrc.json` 配置文件支持 — 其他团队无需 fork 即可自定义配置源、仓库地址和编辑器
+- **config**: 配置文件查找顺序 — 项目目录 > 用户 home > 内置默认值
+- **config**: 优先级链 — 环境变量 > 项目配置文件 > home 配置文件 > 内置默认值
+- **config**: 自定义编辑器注册 — 配置文件 `editors` 字段自动合并到编辑器注册表，必填字段校验
+- **installer**: 配置源改用 `resolveSources()` 统一解析
+- **uploader**: 仓库地址改用 `resolveRepos()` 统一解析
+- **sync-defaults**: 同步脚本改用 `resolveSources()` 统一解析
+
+### test
+
+- **config**: 新增 15 个测试 — 常量/mergeConfigs/readConfigFile/resolveSources/resolveRepos/resolveCustomEditors
+
 ## [3.12.0] - 2025-04-17
 
 ### feat

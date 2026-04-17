@@ -15,22 +15,11 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+const { resolveSources } = require('../lib/config');
+
 const DEFAULTS_DIR = path.join(__dirname, '..', 'defaults');
 
-const SOURCES = [
-  {
-    name: 'GitHub',
-    baseUrl:
-      process.env.VSCODE_CONFIG_GITHUB_URL ||
-      'https://raw.githubusercontent.com/ChenyCHENYU/vscode-config/main',
-  },
-  {
-    name: 'Gitee',
-    baseUrl:
-      process.env.VSCODE_CONFIG_GITEE_URL ||
-      'https://gitee.com/ycyplus163/vscode-config/raw/main',
-  },
-];
+const SOURCES = resolveSources();
 
 const FILES = ['settings.json', 'keybindings.json', 'extensions.list'];
 
