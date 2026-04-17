@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.14.1] - 2025-04-18
+
+### fix
+
+- **ui**: 移除 `gradient-string` 的 CommonJS 直连依赖，修复 Node 18 下 `ERR_REQUIRE_ESM`
+- **ci**: GitHub Actions 的 Node 18/20/22 矩阵不再因 `ui.js` 加载失败导致测试中断
+
 ## [3.14.0] - 2025-04-18
 
 ### feat
