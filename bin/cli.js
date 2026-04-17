@@ -2,11 +2,7 @@
 
 const { program } = require('commander');
 const chalk = require('chalk');
-const {
-  installConfig,
-  CONFIG_SOURCES,
-  detectEditorPaths,
-} = require("../lib/installer");
+const { installConfig, detectEditorPaths } = require('../lib/installer')
 const { EDITOR_REGISTRY } = require("../lib/editors");
 const prompts = require('prompts');
 const ui = require('../lib/ui');
