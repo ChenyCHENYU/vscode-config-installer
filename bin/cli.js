@@ -3,22 +3,27 @@
 const path = require('path');
 const { program } = require('commander');
 const chalk = require('chalk');
-const { installConfig, detectEditorPaths } = require('../lib/installer')
-const { EDITOR_REGISTRY } = require("../lib/editors");
-const prompts = require('prompts');
+const { installConfig, detectEditorPaths } = require('../lib/installer');
+const { EDITOR_REGISTRY } = require('../lib/editors');
+const select = require('../lib/select');
 const ui = require('../lib/ui');
 
 const packageJson = require('../package.json');
 
 async function selectInstallMode() {
   console.log('');
-  const response = await prompts({
-    type: 'select',
+  const response = await select({
     name: 'mode',
     message: '选择安装模式',
     choices: [
-      { title: `${chalk.cyan('覆盖模式')} ${chalk.gray('(override)')}  完全替换，确保团队一致`, value: 'override' },
-      { title: `${chalk.yellow('合并模式')} ${chalk.gray('(merge)')}     保留个人设置，只同步团队配置`, value: 'merge' },
+      {
+        title: `${chalk.cyan('覆盖模式')} ${chalk.gray('(override)')}  完全替换，确保团队一致`,
+        value: 'override',
+      },
+      {
+        title: `${chalk.yellow('合并模式')} ${chalk.gray('(merge)')}     保留个人设置，只同步团队配置`,
+        value: 'merge',
+      },
     ],
     initial: 0,
   });
@@ -90,8 +95,7 @@ async function selectEditor() {
     process.exit(1);
   }
 
-  const response = await prompts({
-    type: 'select',
+  const response = await select({
     name: 'editor',
     message: '选择目标编辑器',
     choices,
@@ -108,8 +112,8 @@ async function selectEditor() {
 }
 
 program
-  .name("vscode-config")
-  .description("一键安装 VSCode / Cursor / Windsurf / Kiro 配置工具")
+  .name('vscode-config')
+  .description('一键安装 VSCode / Cursor / Windsurf / Kiro 配置工具')
   .version(packageJson.version);
 
 // install 命令
@@ -228,15 +232,15 @@ program
 
 // status 命令 - 检查当前配置状态
 program
-  .command("status")
-  .description("检查当前编辑器配置状态")
+  .command('status')
+  .description('检查当前编辑器配置状态')
   .option(
-    "--editor <name>",
-    "目标编辑器 (vscode|cursor|windsurf|kiro)",
-    "vscode",
+    '--editor <name>',
+    '目标编辑器 (vscode|cursor|windsurf|kiro)',
+    'vscode'
   )
-  .action(async (options) => {
-    const { checkStatus } = require("../lib/status");
+  .action(async options => {
+    const { checkStatus } = require('../lib/status');
     try {
       await checkStatus(options.editor);
     } catch (error) {
@@ -247,17 +251,17 @@ program
 
 // restore 命令 - 恢复备份
 program
-  .command("restore")
-  .description("恢复之前备份的配置")
-  .option("--list", "列出可用的备份")
-  .option("--backup <path>", "指定要恢复的备份路径")
+  .command('restore')
+  .description('恢复之前备份的配置')
+  .option('--list', '列出可用的备份')
+  .option('--backup <path>', '指定要恢复的备份路径')
   .option(
-    "--editor <name>",
-    "目标编辑器 (vscode|cursor|windsurf|kiro)",
-    "vscode",
+    '--editor <name>',
+    '目标编辑器 (vscode|cursor|windsurf|kiro)',
+    'vscode'
   )
-  .action(async (options) => {
-    const { restoreBackup } = require("../lib/backup");
+  .action(async options => {
+    const { restoreBackup } = require('../lib/backup');
     try {
       await restoreBackup(options);
     } catch (error) {
@@ -268,16 +272,16 @@ program
 
 // clean 命令 - 清理旧备份
 program
-  .command("clean")
-  .description("清理旧的配置备份")
-  .option("--older-than <days>", "删除超过指定天数的备份", "30")
+  .command('clean')
+  .description('清理旧的配置备份')
+  .option('--older-than <days>', '删除超过指定天数的备份', '30')
   .option(
-    "--editor <name>",
-    "目标编辑器 (vscode|cursor|windsurf|kiro)",
-    "vscode",
+    '--editor <name>',
+    '目标编辑器 (vscode|cursor|windsurf|kiro)',
+    'vscode'
   )
-  .action(async (options) => {
-    const { cleanOldBackups } = require("../lib/backup");
+  .action(async options => {
+    const { cleanOldBackups } = require('../lib/backup');
     try {
       await cleanOldBackups(options);
     } catch (error) {
@@ -288,44 +292,43 @@ program
 
 // upload 命令 - 上传本地配置到远程仓库
 program
-  .command("upload")
-  .description("将本地编辑器配置上传到团队配置仓库")
-  .option("--mode <mode>", "上传模式: override(覆盖) | merge(合并)", "")
-  .option("--repo <path>", "本地配置仓库路径（默认自动 clone 到临时目录）")
-  .option("--source <name>", "配置源 (github|gitee|all)", "all")
-  .option("--editor <name>", "源编辑器 (vscode|cursor|windsurf|kiro)", "vscode")
-  .action(async (options) => {
-    const { uploadConfig } = require("../lib/uploader");
+  .command('upload')
+  .description('将本地编辑器配置上传到团队配置仓库')
+  .option('--mode <mode>', '上传模式: override(覆盖) | merge(合并)', '')
+  .option('--repo <path>', '本地配置仓库路径（默认自动 clone 到临时目录）')
+  .option('--source <name>', '配置源 (github|gitee|all)', 'all')
+  .option('--editor <name>', '源编辑器 (vscode|cursor|windsurf|kiro)', 'vscode')
+  .action(async options => {
+    const { uploadConfig } = require('../lib/uploader');
     try {
       ui.banner(packageJson.version);
       // 如果没指定模式，交互选择
       if (!options.mode) {
-        const response = await prompts({
-          type: "select",
-          name: "mode",
-          message: "选择上传模式",
+        const response = await select({
+          name: 'mode',
+          message: '选择上传模式',
           choices: [
             {
-              title: `${chalk.cyan("覆盖模式")} ${chalk.gray("(override)")}  远程完全替换为我的配置`,
-              value: "override",
+              title: `${chalk.cyan('覆盖模式')} ${chalk.gray('(override)')}  远程完全替换为我的配置`,
+              value: 'override',
             },
             {
-              title: `${chalk.yellow("合并模式")} ${chalk.gray("(merge)")}     保留远程已有，仅追加我新增的`,
-              value: "merge",
+              title: `${chalk.yellow('合并模式')} ${chalk.gray('(merge)')}     保留远程已有，仅追加我新增的`,
+              value: 'merge',
             },
           ],
           initial: 0,
         });
         if (response.mode === undefined) {
-          console.log(chalk.yellow("\n  已取消"));
+          console.log(chalk.yellow('\n  已取消'));
           process.exit(0);
         }
         options.mode = response.mode;
       }
       await uploadConfig(options);
     } catch (error) {
-      console.error("");
-      ui.errorBox("上传失败", [chalk.red(error.message)]);
+      console.error('');
+      ui.errorBox('上传失败', [chalk.red(error.message)]);
       process.exit(1);
     }
   });
@@ -352,7 +355,7 @@ program
 program
   .option('-v, --verbose', '显示详细日志')
   .option('-q, --quiet', '静默模式')
-  .hook('preAction', (thisCommand) => {
+  .hook('preAction', thisCommand => {
     // 设置全局日志级别
     if (thisCommand.opts().verbose) {
       process.env.LOG_LEVEL = 'verbose';
@@ -373,46 +376,54 @@ program.on('command:*', () => {
 if (process.argv.length <= 2) {
   console.log(
     chalk.cyan.bold(
-      `${ui.icons.rocket} VSCode / Cursor / Windsurf / Kiro 配置安装工具`,
-    ),
+      `${ui.icons.rocket} VSCode / Cursor / Windsurf / Kiro 配置安装工具`
+    )
   );
   console.log(
     chalk.gray(
-      `版本 ${packageJson.version} | 支持双源加速、双模式安装、多编辑器`,
-    ),
+      `版本 ${packageJson.version} | 支持双源加速、双模式安装、多编辑器`
+    )
   );
   console.log('');
   console.log(chalk.blue(`${ui.icons.rocket} 快速开始:`));
   console.log(
     chalk.white(
-      "  vscode-config install                 # 安装团队配置到 VS Code",
-    ),
+      '  vscode-config install                 # 安装团队配置到 VS Code'
+    )
   );
   console.log(
-    chalk.white("  vscode-config install --editor cursor   # 安装到 Cursor"),
+    chalk.white('  vscode-config install --editor cursor   # 安装到 Cursor')
   );
   console.log(
-    chalk.white("  vscode-config install --editor windsurf # 安装到 Windsurf"),
+    chalk.white('  vscode-config install --editor windsurf # 安装到 Windsurf')
   );
   console.log(
-    chalk.white("  vscode-config install --editor kiro     # 安装到 Kiro"),
-  );
-  console.log(
-    chalk.white(
-      "  vscode-config install --editor all      # 同时安装到所有编辑器",
-    ),
-  );
-  console.log(chalk.white('  vscode-config install --mode merge   # 保留个人设置，合并团队配置'));
-  console.log(chalk.white('  vscode-config upload                 # 上传本地配置到团队仓库'));
-  console.log(
-    chalk.white("  vscode-config status                 # 检查编辑器配置状态"),
+    chalk.white('  vscode-config install --editor kiro     # 安装到 Kiro')
   );
   console.log(
     chalk.white(
-      "  vscode-config status --editor cursor # 检查 Cursor 配置状态",
-    ),
+      '  vscode-config install --editor all      # 同时安装到所有编辑器'
+    )
   );
-  console.log(chalk.white('  vscode-config restore                # 一键恢复到安装前'));
+  console.log(
+    chalk.white(
+      '  vscode-config install --mode merge   # 保留个人设置，合并团队配置'
+    )
+  );
+  console.log(
+    chalk.white(
+      '  vscode-config upload                 # 上传本地配置到团队仓库'
+    )
+  );
+  console.log(
+    chalk.white('  vscode-config status                 # 检查编辑器配置状态')
+  );
+  console.log(
+    chalk.white('  vscode-config status --editor cursor # 检查 Cursor 配置状态')
+  );
+  console.log(
+    chalk.white('  vscode-config restore                # 一键恢复到安装前')
+  );
   console.log('');
   console.log(chalk.gray('使用 --help 查看所有命令和选项'));
   console.log('');
@@ -420,7 +431,7 @@ if (process.argv.length <= 2) {
 }
 
 // 添加全局错误处理
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', error => {
   console.error(chalk.red.bold(`${ui.icons.error} 未捕获的异常:`));
   console.error(chalk.red(error.stack));
   process.exit(1);

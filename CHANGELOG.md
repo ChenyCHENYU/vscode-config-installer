@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.14.4] - 2026-06-12
+
+### feat
+
+- **deps**: 替换已停止维护的 `prompts` → `enquirer`，新增 `lib/select.js` CJS 兼容层
+- **deps**: `commander` 升级 v9 → v15（最新稳定版，完全向后兼容）
+
+### note
+
+- `boxen` / `ora` / `log-symbols` 维持 CJS 兼容版本（v6+ 为 ESM-only，项目为 CJS）
+
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
