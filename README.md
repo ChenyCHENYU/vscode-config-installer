@@ -4,7 +4,7 @@
 
 **团队编辑器配置一键同步工具**
 
-一条命令同步 VS Code / Cursor / Windsurf / Kiro 的 settings、keybindings、extensions。
+一条命令同步 VS Code / Cursor / Windsurf / Kiro / Qoder 的 settings、keybindings、extensions。
 作者维护配置仓库，团队成员一键拉取，支持备份恢复与增量合并。
 
 [![npm version](https://img.shields.io/npm/v/%40agile-team%2Fvscode-config)](https://www.npmjs.com/package/@agile-team/vscode-config)
@@ -31,6 +31,7 @@ vscode-config install              # 交互式选择编辑器和安装模式
 vscode-config install --editor cursor     # 安装到 Cursor
 vscode-config install --editor windsurf   # 安装到 Windsurf
 vscode-config install --editor kiro       # 安装到 Kiro
+vscode-config install --editor qoder      # 安装到 Qoder
 vscode-config install --editor all        # 同时安装到所有编辑器
 vscode-config install --mode merge        # 保留个人设置，仅同步团队新增
 vscode-config install --dry-run           # 预览，不做任何写入
@@ -121,7 +122,7 @@ vscode-config restore                     # 一键恢复到安装前
 
 ## 多编辑器支持
 
-内置 **VS Code**、**Cursor**、**Windsurf**、**Kiro** 四种编辑器，支持通过配置文件自定义更多编辑器（如 Trae、Zed 等）。
+内置 **VS Code**、**Cursor**、**Windsurf**、**Kiro**、**Qoder** 五种编辑器，支持通过配置文件自定义更多编辑器（如 Trae、Zed 等）。
 
 - 不带 `--editor` 参数时**交互式选择**，自动检测已安装的编辑器
 - `--editor all` 同时安装到所有已检测编辑器
@@ -169,6 +170,7 @@ vscode-config clean --older-than 7 # 清理 7 天前的旧备份
 | Cursor   | `%APPDATA%\Cursor\User\backup-*\`   | `~/Library/Application Support/Cursor/User/backup-*/`   | `~/.config/Cursor/User/backup-*/`   |
 | Windsurf | `%APPDATA%\Windsurf\User\backup-*\` | `~/Library/Application Support/Windsurf/User/backup-*/` | `~/.config/Windsurf/User/backup-*/` |
 | Kiro     | `%APPDATA%\Kiro\User\backup-*\`     | `~/Library/Application Support/Kiro/User/backup-*/`     | `~/.config/Kiro/User/backup-*/`     |
+| Qoder    | `%APPDATA%\Qoder\User\backup-*\`    | `~/Library/Application Support/Qoder/User/backup-*/`    | `~/.config/Qoder/User/backup-*/`    |
 
 </details>
 
@@ -348,11 +350,11 @@ vscode-config download-extensions --output ./vsix-cache --force   # 全量重下
 
 ## 系统要求
 
-| 依赖    | 版本                                        |
-| ------- | ------------------------------------------- |
-| Node.js | >= 16.7                                     |
-| Git     | 已安装                                      |
-| 编辑器  | VS Code / Cursor / Windsurf / Kiro 至少一个 |
+| 依赖    | 版本                                                |
+| ------- | --------------------------------------------------- |
+| Node.js | >= 16.7                                             |
+| Git     | 已安装                                              |
+| 编辑器  | VS Code / Cursor / Windsurf / Kiro / Qoder 至少一个 |
 
 ```bash
 vscode-config status  # 一键检查环境

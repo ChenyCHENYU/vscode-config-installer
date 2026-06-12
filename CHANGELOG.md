@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.14.3] - 2026-06-12
+
+### feat
+
+- **editors**: 新增 Qoder 编辑器支持 — 自动检测安装路径、读写 `%APPDATA%\Qoder\User` 配置目录、通过 `qoder.cmd` CLI 安装扩展
+
 ## [3.14.2] - 2026-04-18
 
 ### fix
