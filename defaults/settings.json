@@ -26,12 +26,14 @@
     "editor.mouseWheelZoom": true,
     "gitlens.ai.model": "vscode",
     "gitlens.ai.vscode.model": "copilot:gpt-4.1",
-    "chat.viewSessions.orientation": "stacked",
     "files.autoSave": "afterDelay",
     "diffEditor.maxComputationTime": 0,
     "terminal.integrated.commandsToSkipShell": [
         "kilo-code.new.agentManagerOpen",
-        "kilo-code.new.agentManager.showTerminal"
+        "kilo-code.new.agentManager.showTerminal",
+        "kilo-code.new.agentManager.previousTerminal",
+        "kilo-code.new.agentManager.nextTerminal",
+        "kilo-code.new.agentManager.runScript"
     ],
     "kilo-code.new.showTaskTimeline": false,
     "roo-cline.debug": false,
@@ -40,5 +42,8 @@
         "git diff",
         "git show"
     ],
-    "roo-cline.deniedCommands": []
+    "roo-cline.deniedCommands": [],
+    "kilo-code.new.agentWorkStyle": "autonomous",
+    "kilo-code.new.autoApprove.enabled": true,
+    "chat.viewSessions.orientation": "stacked"
 }

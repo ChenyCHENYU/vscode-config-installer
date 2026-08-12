@@ -1,9 +1,8 @@
 # Editor Extensions
-# 由 vscode-config upload 生成 (2026/5/5)
-# 共 41 个扩展
+# 由 vscode-config upload 生成 (2026/8/12)
+# 共 43 个扩展
 
 aaron-bond.better-comments
-adpyke.codesnap
 alefragnani.project-manager
 antfu.iconify
 antfu.unocss
@@ -17,29 +16,32 @@ editorconfig.editorconfig
 esbenp.prettier-vscode
 fnando.linter
 formulahendry.auto-close-tag
-formulahendry.auto-rename-tag
 formulahendry.code-runner
 gruntfuggly.todo-tree
 humao.rest-client
-mhutchie.git-graph
+kilocode.kilo-code
 ms-ceintl.vscode-language-pack-zh-hans
 naumovs.color-highlight
 obkoro1.korofileheader
-perkovec.emoji
+openai.chatgpt
 pkief.material-icon-theme
-pmneo.tsimporter
 pranaygp.vscode-css-peek
+redhat.java
 ritwickdey.liveserver
-rooveterinaryinc.roo-cline
 russell.any-rule
 samge.vscode-samge-translate
 shd101wyy.markdown-preview-enhanced
-shengsuan-cloud.cline-shengsuan
 streetsidesoftware.code-spell-checker
 uni-helper.uni-app-schemas-vscode
 uni-helper.uni-app-snippets-vscode
 usernamehw.errorlens
 vitest.explorer
+vscjava.vscode-gradle
+vscjava.vscode-java-debug
+vscjava.vscode-java-dependency
+vscjava.vscode-java-pack
+vscjava.vscode-java-test
+vscjava.vscode-maven
 vue.volar
 wix.vscode-import-cost
 zhucy.project-tree
