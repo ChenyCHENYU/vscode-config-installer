@@ -1,6 +1,6 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "3.14.4",
+  "version": "3.14.5",
   "description": "One-command editor configuration installer (VS Code / Cursor / Windsurf / Kiro / Qoder) for team standard setup",
   "main": "lib/installer.js",
   "bin": {

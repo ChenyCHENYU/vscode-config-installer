@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.14.5] - 2026-08-12
+
+### chore
+
+- **defaults**: 同步最新默认配置 — 扩展集 41 → 43 个（+kilo-code/openai.chatgpt/redhat.java 及 6 个 Java 扩展，-codesnap/auto-rename-tag/git-graph/emoji/tsimporter 等已废弃插件），`settings.json` 同步本地最新（kilo-code agent 配置等）
+
 ## [3.14.4] - 2026-06-12
 
 ### feat
