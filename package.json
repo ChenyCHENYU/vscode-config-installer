@@ -1,6 +1,6 @@
 {
   "name": "@agile-team/vscode-config",
-  "version": "3.14.5",
+  "version": "3.15.0",
   "description": "One-command editor configuration installer (VS Code / Cursor / Windsurf / Kiro / Qoder) for team standard setup",
   "main": "lib/installer.js",
   "bin": {
@@ -38,7 +38,7 @@
     "url": "https://github.com/ChenyCHENYU/vscode-config-installer/issues"
   },
   "engines": {
-    "node": ">=16.7.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "boxen": "^5.1.2",

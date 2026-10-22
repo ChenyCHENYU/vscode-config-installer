@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.15.0] - 2026-10-22
+
+### fix
+
+- **tests**: 修复 Qoder 断言未同步 — 3.14.3 新增 Qoder 时测试未更新，`EDITOR_REGISTRY` / `resolveEditorKeys` 共 3 处断言失败导致 CI 挂（本版起 CI 恢复绿色）
+- **installer**: 离线 .vsix 路径含空格时 `--install-extension` 命令解析破碎 — 路径统一加引号
+- **installer**: `keybindings.json` 为空（远程缺失且本地兜底为 0 字节）时不再写出空文件并误报"安装完成"，改为明确跳过
+- **editors**: 自定义编辑器合并从模块加载时（require 副作用）改为首次使用时惰性执行，配置文件异常不再影响注册表
+- **installer**: 配置源解析同样惰性化，`require()` 不再产生文件系统读取
+
+### feat
+
+- **status**: 不带 `--editor` 时输出全编辑器安装状态总览（编辑器/状态/版本一屏可见），`--editor <name>` 仍查看单编辑器详情
+- **docs**: `--mode merge` 补充说明 — 合并以 JSON 重写 `settings.json`，本地 JSONC 注释会丢失
+
+### chore
+
+- **engines**: Node.js `>=16.7.0` → `>=18.0.0`（测试运行时 node:test 实际要求 18+，CI 矩阵为 Node 20，名实一致）
+- 帮助文本与 JSDoc 补齐 Qoder（installer/backup/cli 中遗漏的编辑器列表）
+
 ## [3.14.5] - 2026-08-12
 
 ### chore

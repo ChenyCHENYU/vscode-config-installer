@@ -4,11 +4,14 @@ const path = require('path');
 const { program } = require('commander');
 const chalk = require('chalk');
 const { installConfig, detectEditorPaths } = require('../lib/installer');
-const { EDITOR_REGISTRY } = require('../lib/editors');
+const { EDITOR_REGISTRY, ensureCustomEditors } = require('../lib/editors');
 const select = require('../lib/select');
 const ui = require('../lib/ui');
 
 const packageJson = require('../package.json');
+
+// 交互列表直接读取 EDITOR_REGISTRY，入口处先合并配置文件里的自定义编辑器
+ensureCustomEditors();
 
 async function selectInstallMode() {
   console.log('');
@@ -127,7 +130,7 @@ program
   .option('--mode <mode>', '安装模式 (override|merge)', 'override')
   .option(
     '--editor <name>',
-    '目标编辑器 (vscode|cursor|windsurf|kiro|all)',
+    '目标编辑器 (vscode|cursor|windsurf|kiro|qoder|all)',
     'vscode'
   )
   .option(
@@ -233,16 +236,16 @@ program
 // status 命令 - 检查当前配置状态
 program
   .command('status')
-  .description('检查当前编辑器配置状态')
-  .option(
-    '--editor <name>',
-    '目标编辑器 (vscode|cursor|windsurf|kiro)',
-    'vscode'
-  )
+  .description('检查编辑器配置状态（不带 --editor 时输出全编辑器总览）')
+  .option('--editor <name>', '目标编辑器 (vscode|cursor|windsurf|kiro|qoder)')
   .action(async options => {
-    const { checkStatus } = require('../lib/status');
+    const { checkStatus, scanAllEditors } = require('../lib/status');
     try {
-      await checkStatus(options.editor);
+      if (options.editor) {
+        await checkStatus(options.editor);
+      } else {
+        scanAllEditors();
+      }
     } catch (error) {
       console.error(chalk.red(`状态检查失败: ${error.message}`));
       process.exit(1);
@@ -257,7 +260,7 @@ program
   .option('--backup <path>', '指定要恢复的备份路径')
   .option(
     '--editor <name>',
-    '目标编辑器 (vscode|cursor|windsurf|kiro)',
+    '目标编辑器 (vscode|cursor|windsurf|kiro|qoder)',
     'vscode'
   )
   .action(async options => {
@@ -277,7 +280,7 @@ program
   .option('--older-than <days>', '删除超过指定天数的备份', '30')
   .option(
     '--editor <name>',
-    '目标编辑器 (vscode|cursor|windsurf|kiro)',
+    '目标编辑器 (vscode|cursor|windsurf|kiro|qoder)',
     'vscode'
   )
   .action(async options => {
@@ -297,7 +300,11 @@ program
   .option('--mode <mode>', '上传模式: override(覆盖) | merge(合并)', '')
   .option('--repo <path>', '本地配置仓库路径（默认自动 clone 到临时目录）')
   .option('--source <name>', '配置源 (github|gitee|all)', 'all')
-  .option('--editor <name>', '源编辑器 (vscode|cursor|windsurf|kiro)', 'vscode')
+  .option(
+    '--editor <name>',
+    '源编辑器 (vscode|cursor|windsurf|kiro|qoder)',
+    'vscode'
+  )
   .action(async options => {
     const { uploadConfig } = require('../lib/uploader');
     try {

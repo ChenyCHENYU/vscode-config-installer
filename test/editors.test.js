@@ -3,9 +3,9 @@ const assert = require('node:assert/strict');
 const { EDITOR_REGISTRY, resolveEditorKeys } = require('../lib/editors');
 
 describe('EDITOR_REGISTRY', () => {
-  it('包含 4 个编辑器', () => {
+  it('包含 5 个编辑器', () => {
     const keys = Object.keys(EDITOR_REGISTRY);
-    assert.deepEqual(keys, ['vscode', 'cursor', 'windsurf', 'kiro']);
+    assert.deepEqual(keys, ['vscode', 'cursor', 'windsurf', 'kiro', 'qoder']);
   });
 
   it('每个编辑器都有必需字段', () => {
@@ -66,15 +66,22 @@ describe('resolveEditorKeys', () => {
     assert.deepEqual(resolveEditorKeys('kiro'), ['kiro']);
   });
 
+  it('qoder 返回 [qoder]', () => {
+    assert.deepEqual(resolveEditorKeys('qoder'), ['qoder']);
+  });
+
   it('all 返回所有编辑器', () => {
     const result = resolveEditorKeys('all');
-    assert.deepEqual(result, ['vscode', 'cursor', 'windsurf', 'kiro']);
+    assert.deepEqual(result, ['vscode', 'cursor', 'windsurf', 'kiro', 'qoder']);
   });
 
   it('大小写不敏感', () => {
     assert.deepEqual(resolveEditorKeys('VSCode'), ['vscode']);
     assert.deepEqual(resolveEditorKeys('CURSOR'), ['cursor']);
-    assert.deepEqual(resolveEditorKeys('ALL'), ['vscode', 'cursor', 'windsurf', 'kiro']);
+    assert.deepEqual(
+      resolveEditorKeys('ALL'),
+      ['vscode', 'cursor', 'windsurf', 'kiro', 'qoder']
+    );
   });
 
   it('未知值回退 vscode', () => {

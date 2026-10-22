@@ -10,7 +10,7 @@
 [![npm version](https://img.shields.io/npm/v/%40agile-team%2Fvscode-config)](https://www.npmjs.com/package/@agile-team/vscode-config)
 [![CI](https://github.com/ChenyCHENYU/vscode-config-installer/actions/workflows/ci.yml/badge.svg)](https://github.com/ChenyCHENYU/vscode-config-installer/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.7.0-brightgreen)](https://nodejs.org/)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 
 </div>
 
@@ -64,16 +64,16 @@ vscode-config restore                     # 一键恢复到安装前
 
 ### install — 安装/同步配置
 
-| 选项                      | 说明                                                                   |
-| ------------------------- | ---------------------------------------------------------------------- |
-| `--editor <name>`         | 目标编辑器：`vscode` / `cursor` / `windsurf` / `kiro` / `all` / 自定义 |
-| `--mode <mode>`           | `override`（覆盖，默认）或 `merge`（合并）                             |
-| `--force`                 | 跳过备份和交互确认                                                     |
-| `--dry-run`               | 预览模式，不做任何写入                                                 |
-| `--source <name>`         | 配置源：`github` / `gitee`                                             |
-| `--timeout <sec>`         | 扩展安装超时（默认 30 秒）                                             |
-| `--extensions-dir <path>` | 离线 .vsix 目录（内网环境）                                            |
-| `-v`                      | 显示详细诊断日志                                                       |
+| 选项                      | 说明                                                                             |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| `--editor <name>`         | 目标编辑器：`vscode` / `cursor` / `windsurf` / `kiro` / `qoder` / `all` / 自定义 |
+| `--mode <mode>`           | `override`（覆盖，默认）或 `merge`（合并）                                       |
+| `--force`                 | 跳过备份和交互确认                                                               |
+| `--dry-run`               | 预览模式，不做任何写入                                                           |
+| `--source <name>`         | 配置源：`github` / `gitee`                                                       |
+| `--timeout <sec>`         | 扩展安装超时（默认 30 秒）                                                       |
+| `--extensions-dir <path>` | 离线 .vsix 目录（内网环境）                                                      |
+| `-v`                      | 显示详细诊断日志                                                                 |
 
 ### upload — 上传本地配置到团队仓库
 
@@ -96,14 +96,15 @@ vscode-config restore                     # 一键恢复到安装前
 
 ### status / restore / clean
 
-| 命令                                      | 说明                                     |
-| ----------------------------------------- | ---------------------------------------- |
-| `vscode-config status`                    | 检查编辑器版本、配置文件、已装扩展、备份 |
-| `vscode-config restore`                   | 恢复备份（多个可交互选择）               |
-| `vscode-config restore --list`            | 列出所有可用备份                         |
-| `vscode-config restore --backup <path>`   | 恢复指定路径的备份                       |
-| `vscode-config clean`                     | 清理 30 天前的旧备份                     |
-| `vscode-config clean --older-than <days>` | 指定清理天数                             |
+| 命令                                      | 说明                                         |
+| ----------------------------------------- | -------------------------------------------- |
+| `vscode-config status`                    | 全编辑器安装状态总览（不带 `--editor` 时）   |
+| `vscode-config status --editor <name>`    | 检查单个编辑器版本、配置文件、已装扩展、备份 |
+| `vscode-config restore`                   | 恢复备份（多个可交互选择）                   |
+| `vscode-config restore --list`            | 列出所有可用备份                             |
+| `vscode-config restore --backup <path>`   | 恢复指定路径的备份                           |
+| `vscode-config clean`                     | 清理 30 天前的旧备份                         |
+| `vscode-config clean --older-than <days>` | 指定清理天数                                 |
 
 > 以上命令均支持 `--editor <name>` 指定编辑器。
 
@@ -115,6 +116,8 @@ vscode-config restore                     # 一键恢复到安装前
 | ----------------------- | --------------------------------------------- | ---------------------------- |
 | **覆盖**（默认）        | 完全替换 settings / keybindings，保证团队一致 | 新机器初始化、重置为团队标准 |
 | **合并** `--mode merge` | 深度合并，同名 key 覆盖，独有 key 保留        | 已有个人配置，只同步团队新增 |
+
+> **注意**：`merge` 模式会以 JSON 重写 `settings.json`，本地文件中的 JSONC 注释会丢失；有注释习惯请先备份或使用 `--dry-run` 预览。
 
 两种模式都会**自动备份**当前配置，可随时 `restore` 回滚。
 
@@ -351,8 +354,8 @@ vscode-config download-extensions --output ./vsix-cache --force   # 全量重下
 ## 系统要求
 
 | 依赖    | 版本                                                |
-| ------- | --------------------------------------------------- |
-| Node.js | >= 16.7                                             |
+| ------- | --------------------------------------------------- | --- |
+| Node.js | >= 18                                               |     |
 | Git     | 已安装                                              |
 | 编辑器  | VS Code / Cursor / Windsurf / Kiro / Qoder 至少一个 |
 
